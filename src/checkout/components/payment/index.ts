@@ -14,6 +14,8 @@ export {
 	type PaymentTrustSignalsProps,
 } from "./payment-trust-signals";
 
+export { UpiPaymentPanel } from "./upi/upi-payment-panel";
+
 export { DummyPaymentPlaceholder, type DummyPaymentPlaceholderProps } from "./dummy-payment-placeholder";
 
 export {

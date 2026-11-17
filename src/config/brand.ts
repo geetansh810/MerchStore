@@ -1,3 +1,5 @@
+import { anniversaryCampaign, anniversaryLabel } from "./campaign";
+
 /**
  * Brand Configuration
  *
@@ -15,28 +17,28 @@
 
 export const brandConfig = {
 	/** Site name used in titles, metadata, and headers */
-	siteName: "Saleor Store",
+	siteName: "Anniversary Store",
 
 	/** Legal entity name for copyright notices */
-	copyrightHolder: "Saleor Store",
+	copyrightHolder: "Anniversary Store",
 
 	/** Organization name for structured data (JSON-LD) */
-	organizationName: "Saleor Store",
+	organizationName: "Anniversary Store",
 
 	/** Default brand name for products without a brand */
-	defaultBrand: "Saleor Store",
+	defaultBrand: "Anniversary Store",
 
 	/** Tagline/description for the store */
-	tagline: "Discover our collection.",
+	tagline: `Commemorative gifts & merchandise for the ${anniversaryLabel} of the ${anniversaryCampaign.honoree}.`,
 
 	/** Homepage meta description */
-	description: "Shop our collection.",
+	description: `Celebrate ${anniversaryCampaign.years} years of the ${anniversaryCampaign.honoree} with commemorative apparel, barware, collectibles and personalised gifts.`,
 
 	/** Logo aria-label for accessibility */
-	logoAriaLabel: "Store",
+	logoAriaLabel: "Anniversary Store",
 
 	/** Title template - %s will be replaced with page title */
-	titleTemplate: "%s | Saleor Store",
+	titleTemplate: "%s | Anniversary Store",
 
 	/** Social media handles */
 	social: {

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { brandConfig } from "@/config/brand";
+import { anniversaryCampaign } from "@/config/campaign";
 import { resolveLocaleFromSlug } from "@/config/locale";
 import { getFeaturedProducts } from "@/lib/catalog/get-featured-products";
 import { resolveChannelCurrency } from "@/lib/channels/resolve-channel-currency";
@@ -8,12 +9,9 @@ import { formatContentLabel } from "@/lib/content/format-label";
 import { getStorefrontContent } from "@/lib/content/server";
 import { buildSaleorSrcSet } from "@/lib/images";
 import { pickTranslatedSlug } from "@/lib/saleor-translations";
-import { PaperSignEditorialPlaceholder } from "@/ui/components/shared/paper-sign";
+import { AnniversaryHero } from "@/ui/sections/anniversary-hero/anniversary-hero";
 import { CategoryTileGrid, type CategoryTile } from "@/ui/sections/category-tile-grid/category-tile-grid";
-import { EditorialHero } from "@/ui/sections/editorial-hero/editorial-hero";
 import { FeaturedCollectionSection } from "@/ui/sections/featured-collection-section/featured-collection-section";
-import { ImageWithText } from "@/ui/sections/image-with-text/image-with-text";
-import { MediaHero } from "@/ui/sections/media-hero/media-hero";
 import { MulticolumnSection } from "@/ui/sections/multicolumn-section/multicolumn-section";
 import { RichTextBlock } from "@/ui/sections/rich-text-block/rich-text-block";
 
@@ -42,15 +40,6 @@ function categoryBackgroundSrcSet(category: NonNullable<FeaturedProduct["categor
 		{ width: 512, url: category.backgroundImage512?.url },
 		{ width: 1024, url: category.backgroundImage?.url },
 	]);
-}
-
-function pickImage(product: FeaturedProduct | undefined) {
-	if (!product?.thumbnail?.url) return null;
-	return {
-		url: product.thumbnail.url,
-		alt: product.thumbnail.alt || product.name || "",
-		srcSet: productThumbnailSrcSet(product),
-	};
 }
 
 /**
@@ -85,12 +74,12 @@ function buildCategoryTiles(products: readonly FeaturedProduct[], max = 3): Cate
 function HomePageFallback() {
 	return (
 		<div aria-hidden="true">
-			<div className="min-h-[calc(100svh-var(--chrome-offset))] bg-secondary">
+			<div className="min-h-[calc(100svh-var(--chrome-offset))] bg-primary">
 				<div className="container-content flex h-full min-h-[calc(100svh-var(--chrome-offset))] flex-col justify-end pb-16 pt-24">
-					<div className="h-3 w-24 animate-pulse rounded bg-muted" />
-					<div className="mt-4 h-10 w-2/3 max-w-xl animate-pulse rounded bg-muted" />
-					<div className="mt-3 h-4 w-1/2 max-w-md animate-pulse rounded bg-muted" />
-					<div className="mt-8 h-11 w-36 animate-pulse rounded bg-muted" />
+					<div className="h-3 w-24 animate-pulse rounded bg-primary-foreground/10" />
+					<div className="mt-4 h-10 w-2/3 max-w-xl animate-pulse rounded bg-primary-foreground/10" />
+					<div className="mt-3 h-4 w-1/2 max-w-md animate-pulse rounded bg-primary-foreground/10" />
+					<div className="mt-8 h-11 w-36 animate-pulse rounded bg-primary-foreground/10" />
 				</div>
 			</div>
 		</div>
@@ -107,7 +96,7 @@ function HomePageFallback() {
 async function HomePageContent({ params }: { params: HomeParams }) {
 	const { locale, channel } = await params;
 	const content = await getStorefrontContent(channel, locale);
-	const { hero, featuredCollection, categories, brandStory, values, editorial } = content.surfaces.homepage;
+	const { hero, featuredCollection, categories, brandStory, values } = content.surfaces.homepage;
 
 	// Source real product imagery from the same cached collection the featured
 	// section uses (deduped by "use cache" key).
@@ -117,13 +106,7 @@ async function HomePageContent({ params }: { params: HomeParams }) {
 		featuredCollection.limit,
 		featuredCollection.collectionSlug,
 	);
-	const heroProduct = products[0];
-	const heroImage = pickImage(heroProduct);
-	const editorialProduct = products.find(
-		(product) => product.slug !== heroProduct?.slug && product.thumbnail?.url,
-	);
-	const editorialFallbackImage = pickImage(editorialProduct);
-	const categoryTiles = buildCategoryTiles(products);
+	const categoryTiles = buildCategoryTiles(products, 6);
 
 	const currency = await resolveChannelCurrency(channel);
 	const policyValues = buildPolicyLabelValues(content.policies, {
@@ -137,39 +120,17 @@ async function HomePageContent({ params }: { params: HomeParams }) {
 
 	return (
 		<>
-			{hero.backgroundImage ? (
-				// Art-directed full-bleed media → immersive overlay hero.
-				<MediaHero
-					id="homepage-hero-heading"
-					eyebrow={hero.eyebrow}
-					heading={hero.heading}
-					subheading={hero.subheading}
-					image={hero.backgroundImage}
-					align="left"
-					height="fold"
-					primaryCta={{ label: hero.primaryCtaLabel, href: "/products" }}
-				/>
-			) : (
-				// No lifestyle/hero image in the catalog → clean editorial split with a packshot.
-				<EditorialHero
-					eyebrow={hero.eyebrow}
-					heading={hero.heading}
-					subheading={hero.subheading}
-					image={heroImage?.url}
-					imageSrcSet={heroImage?.srcSet}
-					imageAlt={heroImage?.alt ?? ""}
-					primaryCta={{ label: hero.primaryCtaLabel, href: "/products" }}
-					placeholder={<PaperSignEditorialPlaceholder />}
-				/>
-			)}
-
-			{/* Cached collection — resolves with the rest of the body inside Suspense. */}
-			<FeaturedCollectionSection
-				locale={locale}
-				channel={channel}
-				heading={featuredCollection.heading}
-				collectionSlug={featuredCollection.collectionSlug}
-				limit={featuredCollection.limit}
+			<AnniversaryHero
+				eyebrow={hero.eyebrow}
+				heading={hero.heading}
+				subheading={hero.subheading}
+				numeral={String(anniversaryCampaign.years)}
+				numeralCaption="Years"
+				primaryCta={{
+					label: hero.primaryCtaLabel,
+					href: `/collections/${featuredCollection.collectionSlug}`,
+				}}
+				secondaryCta={{ label: "Browse all", href: "/products" }}
 			/>
 
 			{categoryTiles.length >= 2 ? (
@@ -183,16 +144,13 @@ async function HomePageContent({ params }: { params: HomeParams }) {
 				/>
 			) : null}
 
-			<ImageWithText
-				heading={editorial.heading}
-				paragraphs={editorial.paragraphs}
-				image={editorial.image ?? editorialFallbackImage?.url}
-				imageSrcSet={editorial.image ? undefined : editorialFallbackImage?.srcSet}
-				imageAlt={editorial.image ? editorial.imageAlt : (editorialFallbackImage?.alt ?? "")}
-				imageFit={editorial.image ? "cover" : "contain"}
-				imagePosition={editorial.imagePosition}
-				placeholder={<PaperSignEditorialPlaceholder />}
-				cta={{ label: editorial.ctaLabel, href: "/collections" }}
+			{/* Cached collection — resolves with the rest of the body inside Suspense. */}
+			<FeaturedCollectionSection
+				locale={locale}
+				channel={channel}
+				heading={featuredCollection.heading}
+				collectionSlug={featuredCollection.collectionSlug}
+				limit={featuredCollection.limit}
 			/>
 
 			<MulticolumnSection

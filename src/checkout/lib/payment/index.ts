@@ -1,4 +1,4 @@
-export { executePayment } from "./execute-payment";
+export { executePayment, validatePaymentInput } from "./execute-payment";
 export { completeCheckoutOrder } from "./complete-order";
 export { resolvePaymentProvider, canSubmitPayment, usesClientPaymentSubmit } from "./resolve-provider";
 export {
@@ -7,7 +7,7 @@ export {
 	isIntegratedGateway,
 	type IntegratedGatewayType,
 } from "./integrated-gateways";
-export { isIntegratedPaymentProvider } from "./types";
+export { isIntegratedPaymentProvider, isManualPaymentProvider, type UpiQrPaymentProvider } from "./types";
 export { updateCheckoutBilling, type BillingUpdateResult } from "./update-billing";
 export {
 	type PaymentContext,
@@ -29,3 +29,17 @@ export {
 	type StripeGatewayConfigData,
 	type StripeTransactionData,
 } from "./providers/stripe";
+export {
+	UPI_CURRENCY,
+	UPI_TRANSACTION_ID_NOT_PROVIDED,
+	buildUpiPaymentReference,
+	buildUpiPaymentUri,
+	buildUpiTransactionNote,
+	formatUpiAmount,
+	getUpiQrConfig,
+	isUpiQrPaymentEnabled,
+	isUpiTransactionIdBlocking,
+	validateUpiTransactionId,
+	type UpiQrConfig,
+	type UpiTransactionIdValidation,
+} from "./providers/upi-qr";

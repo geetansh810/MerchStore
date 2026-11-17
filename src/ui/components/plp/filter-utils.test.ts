@@ -461,13 +461,13 @@ describe("buildActiveFilters", () => {
 	it("builds price range filter with range", () => {
 		const result = buildActiveFilters({ priceRange: "50-100" });
 
-		expect(result).toEqual([{ key: "price", label: "Price", value: "$50 - $100" }]);
+		expect(result).toEqual([{ key: "price", label: "Price", value: "₹50 - ₹100" }]);
 	});
 
 	it("builds price range filter with open-ended max", () => {
 		const result = buildActiveFilters({ priceRange: "200-" });
 
-		expect(result).toEqual([{ key: "price", label: "Price", value: "$200+" }]);
+		expect(result).toEqual([{ key: "price", label: "Price", value: "₹200+" }]);
 	});
 
 	it("combines all filter types", () => {
@@ -491,14 +491,14 @@ describe("STATIC_PRICE_RANGES", () => {
 	});
 
 	it("has correct format", () => {
-		expect(STATIC_PRICE_RANGES[0]).toEqual({ label: "Under $50", value: "0-50" });
-		expect(STATIC_PRICE_RANGES[3]).toEqual({ label: "$200+", value: "200-" });
+		expect(STATIC_PRICE_RANGES[0]).toEqual({ label: "Under ₹500", value: "0-500" });
+		expect(STATIC_PRICE_RANGES[3]).toEqual({ label: "₹2,000+", value: "2000-" });
 	});
 
 	it("STATIC_PRICE_RANGES_WITH_COUNT adds count: 0", () => {
 		expect(STATIC_PRICE_RANGES_WITH_COUNT[0]).toEqual({
-			label: "Under $50",
-			value: "0-50",
+			label: "Under ₹500",
+			value: "0-500",
 			count: 0,
 		});
 	});

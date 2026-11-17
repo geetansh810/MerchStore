@@ -8,8 +8,9 @@ import { formatPrice, formatDate as formatLocaleDate } from "@/config/locale";
 const twMerge = extendTailwindMerge({
 	extend: {
 		classGroups: {
-			"font-size": [{ text: ["display", "h1", "h2", "h3", "lead", "eyebrow"] }],
-			"text-color": [{ text: ["bestseller"] }],
+			"font-size": [{ text: ["display", "h1", "h2", "h3", "lead", "eyebrow", "numeral"] }],
+			"text-color": [{ text: ["bestseller", "highlight"] }],
+			"bg-image": [{ bg: ["hero-sky"] }],
 			"border-color": [{ border: ["bestseller"] }],
 		},
 	},

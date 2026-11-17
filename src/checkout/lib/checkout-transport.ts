@@ -6,6 +6,7 @@ import type {
 } from "@/checkout/graphql/generated/operations";
 import type {
 	CheckoutActionResult,
+	CheckoutCompleteOptions,
 	CheckoutCompleteActionResult,
 	PaymentGatewaysInitializeActionResult,
 	TransactionInitializeActionResult,
@@ -42,7 +43,10 @@ export type CheckoutTransport = {
 		variables: TransactionProcessMutationVariables,
 	) => Promise<TransactionProcessActionResult>;
 	/** `checkoutComplete` — converts a fully-paid checkout into an order. */
-	completeCheckout: (checkoutId: string) => Promise<CheckoutCompleteActionResult>;
+	completeCheckout: (
+		checkoutId: string,
+		options?: CheckoutCompleteOptions,
+	) => Promise<CheckoutCompleteActionResult>;
 };
 
 // Module-level holder, set once by the checkout shell before any payment code runs.

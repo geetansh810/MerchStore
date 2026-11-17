@@ -4,7 +4,7 @@ import type { CountryCode } from "@/checkout/graphql";
  * Last resort when the channel has no shippable countries (broken config).
  * Prefer {@link resolveBlankAddressCountryCode} over using this directly.
  */
-export const FALLBACK_ADDRESS_COUNTRY: CountryCode = "US";
+export const FALLBACK_ADDRESS_COUNTRY: CountryCode = "IN";
 
 /**
  * Country to preselect on an empty shipping/billing form.

@@ -1,6 +1,6 @@
 {
-	"name": "Paper",
-	"short_name": "Paper",
+	"name": "Anniversary Store",
+	"short_name": "Anniversary",
 	"icons": [
 		{
 			"src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
 			"type": "image/png"
 		}
 	],
-	"theme_color": "#FAF9F7",
-	"background_color": "#FAF9F7",
+	"theme_color": "#0B1F3F",
+	"background_color": "#F7FAFD",
 	"display": "standalone"
 }

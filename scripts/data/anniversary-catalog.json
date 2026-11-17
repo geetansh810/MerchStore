@@ -1,0 +1,294 @@
+{
+	"version": 1,
+	"_note": "PRICES ARE PLACEHOLDERS (INR, GST-inclusive assumed) — replace once the client confirms. Images are uploaded manually in Saleor Dashboard.",
+	"channel": "channel-inr",
+	"currency": "INR",
+	"pricesArePlaceholders": true,
+	"skuPrefix": "AF70",
+	"defaultStock": 100,
+	"attributes": {
+		"size": {
+			"slug": "size",
+			"adultValues": ["S", "M", "L", "XL", "XXL"],
+			"kidsValues": ["2-3Y", "3-4Y", "5-6Y", "7-8Y", "9-10Y", "11-12Y"]
+		}
+	},
+	"productTypes": [
+		{ "slug": "anniversary-apparel", "name": "Apparel", "hasVariants": true, "variantAttribute": "size" },
+		{
+			"slug": "anniversary-kids-apparel",
+			"name": "Kids Apparel",
+			"hasVariants": true,
+			"variantAttribute": "size"
+		},
+		{ "slug": "anniversary-gift", "name": "Gift", "hasVariants": false, "variantAttribute": null },
+		{
+			"slug": "anniversary-personalised-gift",
+			"name": "Personalised Gift",
+			"hasVariants": false,
+			"variantAttribute": null
+		}
+	],
+	"categories": [
+		{
+			"slug": "anniversary-apparel",
+			"name": "Apparel",
+			"description": "Commemorative tees, polos, hoodies and caps."
+		},
+		{
+			"slug": "anniversary-accessories",
+			"name": "Accessories",
+			"description": "Pins, key rings, luggage tags and everyday keepsakes."
+		},
+		{
+			"slug": "barware",
+			"name": "Barware",
+			"description": "Glassware and bar accessories for the mess and home bar."
+		},
+		{
+			"slug": "personalised-gifts",
+			"name": "Personalised Gifts",
+			"description": "Gifts printed with a name of your choice."
+		},
+		{
+			"slug": "collectibles",
+			"name": "Collectibles",
+			"description": "Prints, models, patches and souvenirs to treasure."
+		}
+	],
+	"collection": {
+		"slug": "70th-anniversary",
+		"name": "70th Anniversary",
+		"description": "The commemorative collection celebrating 70 years."
+	},
+	"products": [
+		{
+			"slug": "anniversary-cap",
+			"name": "Anniversary Cap",
+			"skuStem": "CAP",
+			"category": "anniversary-apparel",
+			"productType": "anniversary-gift",
+			"price": 499,
+			"featured": true,
+			"description": "Adjustable cotton cap with embroidered 70th anniversary design. One size fits most."
+		},
+		{
+			"slug": "anniversary-polo-t-shirt",
+			"name": "Anniversary Polo T-shirt",
+			"skuStem": "POLO",
+			"category": "anniversary-apparel",
+			"productType": "anniversary-apparel",
+			"sizes": ["S", "M", "L", "XL", "XXL"],
+			"price": 899,
+			"featured": true,
+			"description": "Pique cotton polo with embroidered 70th anniversary design on the chest."
+		},
+		{
+			"slug": "anniversary-t-shirt",
+			"name": "Anniversary T-shirt",
+			"skuStem": "TSHIRT",
+			"category": "anniversary-apparel",
+			"productType": "anniversary-apparel",
+			"sizes": ["S", "M", "L", "XL", "XXL"],
+			"price": 599,
+			"featured": true,
+			"description": "Soft crew-neck cotton tee with a printed 70th anniversary graphic."
+		},
+		{
+			"slug": "anniversary-kids-t-shirt",
+			"name": "Kids Anniversary T-shirt",
+			"skuStem": "KTSHIRT",
+			"category": "anniversary-apparel",
+			"productType": "anniversary-kids-apparel",
+			"sizes": ["2-3Y", "3-4Y", "5-6Y", "7-8Y", "9-10Y", "11-12Y"],
+			"price": 449,
+			"featured": false,
+			"description": "Kids' cotton tee with a playful 70th anniversary print."
+		},
+		{
+			"slug": "anniversary-ladies-t-shirt",
+			"name": "Ladies Anniversary T-shirt",
+			"skuStem": "LTSHIRT",
+			"category": "anniversary-apparel",
+			"productType": "anniversary-apparel",
+			"sizes": ["S", "M", "L", "XL", "XXL"],
+			"price": 599,
+			"featured": false,
+			"description": "Women's fit cotton tee with a printed 70th anniversary graphic."
+		},
+		{
+			"slug": "anniversary-hoodie",
+			"name": "Anniversary Hoodie",
+			"skuStem": "HOODIE",
+			"category": "anniversary-apparel",
+			"productType": "anniversary-apparel",
+			"sizes": ["S", "M", "L", "XL", "XXL"],
+			"price": 1499,
+			"featured": true,
+			"description": "Brushed fleece pullover hoodie with 70th anniversary print."
+		},
+		{
+			"slug": "anniversary-fridge-magnet",
+			"name": "Anniversary Fridge Magnet",
+			"skuStem": "MAGNET",
+			"category": "collectibles",
+			"productType": "anniversary-gift",
+			"price": 149,
+			"featured": false,
+			"description": "Commemorative 70th anniversary fridge magnet."
+		},
+		{
+			"slug": "anniversary-luggage-tags",
+			"name": "Anniversary Luggage Tags",
+			"skuStem": "LUGTAG",
+			"category": "anniversary-accessories",
+			"productType": "anniversary-gift",
+			"price": 249,
+			"featured": false,
+			"description": "Durable luggage tag with address card and 70th anniversary design."
+		},
+		{
+			"slug": "anniversary-whiskey-glass",
+			"name": "Anniversary Whiskey Glass",
+			"skuStem": "WGLASS",
+			"category": "barware",
+			"productType": "anniversary-gift",
+			"price": 699,
+			"featured": true,
+			"description": "Heavy-base whiskey tumbler etched with the 70th anniversary design."
+		},
+		{
+			"slug": "anniversary-squadron-print",
+			"name": "Squadron Print",
+			"skuStem": "PRINT",
+			"category": "collectibles",
+			"productType": "anniversary-gift",
+			"price": 999,
+			"featured": true,
+			"description": "Archival-quality commemorative print celebrating 70 years."
+		},
+		{
+			"slug": "anniversary-coffee-flask",
+			"name": "Personalised Coffee Flask",
+			"skuStem": "FLASK",
+			"category": "personalised-gifts",
+			"productType": "anniversary-personalised-gift",
+			"price": 899,
+			"featured": true,
+			"personalisation": { "type": "name", "maxLength": 20 },
+			"description": "Insulated stainless-steel coffee flask printed with the 70th anniversary design and a name of your choice."
+		},
+		{
+			"slug": "anniversary-key-ring",
+			"name": "Anniversary Key Ring",
+			"skuStem": "KEYRING",
+			"category": "anniversary-accessories",
+			"productType": "anniversary-gift",
+			"price": 199,
+			"featured": false,
+			"description": "Metal key ring with 70th anniversary design."
+		},
+		{
+			"slug": "anniversary-key-chain",
+			"name": "Anniversary Key Chain",
+			"skuStem": "KEYCHAIN",
+			"category": "anniversary-accessories",
+			"productType": "anniversary-gift",
+			"price": 199,
+			"featured": false,
+			"description": "Key chain with 70th anniversary fob."
+		},
+		{
+			"slug": "anniversary-tie-pin",
+			"name": "Anniversary Tie Pin",
+			"skuStem": "TIEPIN",
+			"category": "anniversary-accessories",
+			"productType": "anniversary-gift",
+			"price": 349,
+			"featured": false,
+			"description": "Polished tie pin with 70th anniversary detail."
+		},
+		{
+			"slug": "anniversary-lapel-pin",
+			"name": "Anniversary Lapel Pin",
+			"skuStem": "LAPEL",
+			"category": "anniversary-accessories",
+			"productType": "anniversary-gift",
+			"price": 299,
+			"featured": true,
+			"description": "Enamel lapel pin commemorating 70 years."
+		},
+		{
+			"slug": "anniversary-bar-mat",
+			"name": "Anniversary Bar Mat",
+			"skuStem": "BARMAT",
+			"category": "barware",
+			"productType": "anniversary-gift",
+			"price": 599,
+			"featured": false,
+			"description": "Rubber-backed bar runner with 70th anniversary print."
+		},
+		{
+			"slug": "anniversary-bar-tin",
+			"name": "Anniversary Bar Tin",
+			"skuStem": "BARTIN",
+			"category": "barware",
+			"productType": "anniversary-gift",
+			"price": 499,
+			"featured": false,
+			"description": "Collectable tin with 70th anniversary artwork."
+		},
+		{
+			"slug": "anniversary-aircraft-model",
+			"name": "Aircraft Miniature Model",
+			"skuStem": "MODEL",
+			"category": "collectibles",
+			"productType": "anniversary-gift",
+			"price": 2499,
+			"featured": true,
+			"description": "Display-scale aircraft miniature on a commemorative stand."
+		},
+		{
+			"slug": "anniversary-patches",
+			"name": "Anniversary Patches",
+			"skuStem": "PATCH",
+			"category": "collectibles",
+			"productType": "anniversary-gift",
+			"price": 249,
+			"featured": false,
+			"description": "Embroidered 70th anniversary patch."
+		},
+		{
+			"slug": "anniversary-pen",
+			"name": "Anniversary Pen",
+			"skuStem": "PEN",
+			"category": "anniversary-accessories",
+			"productType": "anniversary-gift",
+			"price": 299,
+			"featured": false,
+			"description": "Metal ballpoint pen with 70th anniversary engraving."
+		},
+		{
+			"slug": "anniversary-diary",
+			"name": "Personalised Diary",
+			"skuStem": "DIARY",
+			"category": "personalised-gifts",
+			"productType": "anniversary-personalised-gift",
+			"price": 599,
+			"featured": true,
+			"personalisation": { "type": "name", "maxLength": 20 },
+			"description": "Hardbound diary with 70th anniversary cover, printed with a name of your choice."
+		},
+		{
+			"slug": "anniversary-coffee-mug",
+			"name": "Personalised Coffee Mug",
+			"skuStem": "MUG",
+			"category": "personalised-gifts",
+			"productType": "anniversary-personalised-gift",
+			"price": 449,
+			"featured": true,
+			"personalisation": { "type": "name", "maxLength": 20 },
+			"description": "Ceramic coffee mug with 70th anniversary design and a name of your choice."
+		}
+	]
+}

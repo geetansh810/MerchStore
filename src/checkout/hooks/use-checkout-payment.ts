@@ -8,6 +8,7 @@ import {
 	executePayment,
 	resolvePaymentProvider,
 	updateCheckoutBilling,
+	validatePaymentInput,
 	type ResolvedPaymentProvider,
 } from "@/checkout/lib/payment";
 import {
@@ -37,6 +38,8 @@ type UseCheckoutPaymentParams = {
 	shippingAddress: AddressFragment | null | undefined;
 	userAddresses: ReadonlyArray<AddressFragment> | undefined;
 	authenticated: boolean;
+	/** Provider-specific form input (e.g. the UPI transaction ID typed by the shopper). */
+	paymentInput?: { upiTransactionId?: string };
 };
 
 export function useCheckoutPayment({
@@ -47,6 +50,7 @@ export function useCheckoutPayment({
 	shippingAddress,
 	userAddresses,
 	authenticated,
+	paymentInput,
 }: UseCheckoutPaymentParams) {
 	const { refreshCheckout } = useCheckoutData();
 	const { setAvailabilityIssue } = useCheckoutAvailability();
@@ -89,6 +93,14 @@ export function useCheckoutPayment({
 
 			setErrors({});
 			setAvailabilityIssue(null);
+
+			// Cheap local validation first — no billing/network work for an obviously bad UTR.
+			const inputErrors = validatePaymentInput(provider, paymentInput ?? {}, gatewayMessages);
+			if (inputErrors) {
+				setErrors(inputErrors);
+				return;
+			}
+
 			setIsProcessing(true);
 			let orderPlaced = false;
 
@@ -165,6 +177,8 @@ export function useCheckoutPayment({
 					{
 						checkoutId: liveCheckout.id,
 						amount: payAmount,
+						currency,
+						upiTransactionId: paymentInput?.upiTransactionId,
 					},
 					gatewayMessages,
 				);
@@ -207,6 +221,7 @@ export function useCheckoutPayment({
 			userAddresses,
 			authenticated,
 			provider,
+			paymentInput,
 			refreshCheckout,
 			setAvailabilityIssue,
 			paymentMessages,

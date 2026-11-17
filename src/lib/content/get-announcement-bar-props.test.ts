@@ -5,6 +5,10 @@ import { buildAnnouncementBarContent } from "@/lib/content/get-announcement-bar-
 
 const baseContent: StorefrontContent = {
 	...defaultStorefrontContent,
+	policies: {
+		...defaultStorefrontContent.policies,
+		shipping: { freeShippingThreshold: 75 },
+	},
 	chrome: {
 		...defaultStorefrontContent.chrome,
 		announcementBar: {

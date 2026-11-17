@@ -19,23 +19,30 @@ describe("buildConfiguratorSeedModels", () => {
 	});
 
 	it("maps policy numbers from defaults", () => {
-		const [policies] = buildConfiguratorSeedModels(defaultStorefrontContent);
+		const [policies] = buildConfiguratorSeedModels({
+			...defaultStorefrontContent,
+			policies: {
+				...defaultStorefrontContent.policies,
+				shipping: { freeShippingThreshold: 75 },
+			},
+		});
 
 		expect(policies.attributes).toMatchObject({
-			"Free shipping threshold": defaultStorefrontContent.policies.shipping.freeShippingThreshold,
+			"Free shipping threshold": 75,
 			"Returns window days": defaultStorefrontContent.policies.returns.windowDays,
 		});
 	});
 
-	it("rejects null free-shipping threshold for seed export", () => {
-		expect(() =>
-			buildConfiguratorSeedModels({
-				...defaultStorefrontContent,
-				policies: {
-					...defaultStorefrontContent.policies,
-					shipping: { freeShippingThreshold: null },
-				},
-			}),
-		).toThrow(/freeShippingThreshold is null/);
+	it("omits the free-shipping threshold attribute when the policy is null", () => {
+		const [policies] = buildConfiguratorSeedModels({
+			...defaultStorefrontContent,
+			policies: {
+				...defaultStorefrontContent.policies,
+				shipping: { freeShippingThreshold: null },
+			},
+		});
+
+		expect(policies.attributes).not.toHaveProperty("Free shipping threshold");
+		expect(policies.attributes).toHaveProperty("Returns window days");
 	});
 });

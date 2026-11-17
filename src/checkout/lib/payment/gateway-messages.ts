@@ -16,6 +16,12 @@ export type CheckoutGatewayMessages = {
 	paymentTryAgain: string;
 	paymentWebhookFailed: string;
 	paymentInitFailed: string;
+	upiMisconfiguredTitle: string;
+	upiMisconfiguredBody: string;
+	upiCurrencyUnsupported: string;
+	upiUnpaidOrdersDisabled: string;
+	upiTransactionIdInvalid: string;
+	upiTransactionIdRequired: string;
 };
 
 type GatewayMessageKey =
@@ -31,7 +37,13 @@ type GatewayMessageKey =
 	| "paymentFailed"
 	| "paymentTryAgain"
 	| "paymentWebhookFailed"
-	| "paymentInitFailed";
+	| "paymentInitFailed"
+	| "upiMisconfiguredTitle"
+	| "upiMisconfiguredBody"
+	| "upiCurrencyUnsupported"
+	| "upiUnpaidOrdersDisabled"
+	| "upiTransactionIdInvalid"
+	| "upiTransactionIdRequired";
 
 type GatewayTranslator = (key: GatewayMessageKey, values?: Record<string, string>) => string;
 
@@ -51,6 +63,12 @@ export function buildCheckoutGatewayMessages(t: GatewayTranslator): CheckoutGate
 		paymentTryAgain: t("paymentTryAgain"),
 		paymentWebhookFailed: t("paymentWebhookFailed"),
 		paymentInitFailed: t("paymentInitFailed"),
+		upiMisconfiguredTitle: t("upiMisconfiguredTitle"),
+		upiMisconfiguredBody: t("upiMisconfiguredBody"),
+		upiCurrencyUnsupported: t("upiCurrencyUnsupported"),
+		upiUnpaidOrdersDisabled: t("upiUnpaidOrdersDisabled"),
+		upiTransactionIdInvalid: t("upiTransactionIdInvalid"),
+		upiTransactionIdRequired: t("upiTransactionIdRequired"),
 	};
 }
 

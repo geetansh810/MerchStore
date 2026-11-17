@@ -14,7 +14,6 @@ import { getStorefrontContent } from "@/lib/content/server";
 import { getStorefrontLocaleOptions } from "@/lib/locale-display";
 import { FooterMenuColumns } from "./footer-menu-columns";
 import { CopyrightText } from "./copyright-text";
-import { FooterAttribution } from "./footer-attribution";
 import { FooterPhotoCredits } from "./footer-photo-credits";
 import { brandConfig } from "@/config/brand";
 import { Logo } from "./shared/logo";
@@ -71,7 +70,6 @@ export async function Footer({ locale, channel }: { locale: string; channel: str
 								<CopyrightText />
 							</Suspense>
 						</p>
-						<FooterAttribution />
 						<FooterPhotoCredits credits={content.surfaces.homepage.photoCredits} />
 					</div>
 					<div className="flex items-center gap-6">

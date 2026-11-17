@@ -427,7 +427,8 @@
 			"creatingOrder": "Oppretter bestilling…",
 			"processingPayment": "Behandler betaling…",
 			"continueShopping": "Fortsett å handle",
-			"tryAgain": "Prøv igjen"
+			"tryAgain": "Prøv igjen",
+			"upiPlaceOrder": "I've paid — place order"
 		},
 		"errors": {
 			"sessionExpiredTitle": "Kasseøkt utløpt",
@@ -563,7 +564,26 @@
 			"authorizedBody": "Betalingen din er autorisert (belastning skjer når vi oppfyller bestillingen). Trykk nedenfor for å legge inn bestillingen — du belastes ikke igjen i kassen.",
 			"freeOrderBody": "Ordresummen din er {total}. Ingen betaling kreves — bekreft nedenfor for å legge inn bestillingen.",
 			"dummyTestMode": "Testmodus. Ingen kortdetaljer nødvendig — bruk Betal for å fullføre en testbestilling.",
-			"stripeLoadTitle": "Kunne ikke laste Stripe"
+			"stripeLoadTitle": "Kunne ikke laste Stripe",
+			"upi": {
+				"title": "Pay with UPI",
+				"scanInstruction": "Scan with any UPI app (Google Pay, PhonePe, Paytm, BHIM) and pay exactly {amount}.",
+				"staticQrInstruction": "Scan with any UPI app and enter {amount} as the amount.",
+				"qrAlt": "UPI QR code to pay {amount} to {payee}",
+				"payeeLabel": "Pay to",
+				"upiIdLabel": "UPI ID",
+				"amountLabel": "Amount",
+				"referenceLabel": "Payment note",
+				"copy": "Copy",
+				"copied": "Copied",
+				"openApp": "Open in UPI app",
+				"transactionIdLabel": "UPI transaction ID / UTR (optional)",
+				"transactionIdLabelRequired": "UPI transaction ID / UTR",
+				"transactionIdHint": "Find the 12-digit UTR / UPI Ref No. in your UPI app's payment details. It helps us verify your payment faster.",
+				"transactionIdUnusual": "UTRs are usually 12 digits — please double-check. You can still place the order.",
+				"verificationNotice": "Your order is confirmed once we verify the payment, usually within a few hours.",
+				"currencyUnsupported": "UPI is only available for orders in Indian Rupees (INR)."
+			}
 		},
 		"confirmation": {
 			"orderNumber": "Bestilling #{number}",
@@ -581,7 +601,13 @@
 			"tracking": "Sporing",
 			"createAccount": "Lagre denne bestillingen på en konto",
 			"signIn": "Logg inn for å se alle bestillingsdetaljer",
-			"estimatedDelivery": "Estimert levering"
+			"estimatedDelivery": "Estimert levering",
+			"paymentTitle": "Payment",
+			"paymentPaid": "Paid",
+			"paymentPendingVerification": "Payment pending verification",
+			"paymentMethodUpi": "UPI",
+			"upiTransactionId": "UPI transaction ID: {id}",
+			"upiPendingBody": "We'll confirm by email once we verify your UPI payment of {amount}."
 		},
 		"orderFind": {
 			"title": "Finn bestillingen",
@@ -615,7 +641,9 @@
 			"validationRulesUnavailable": "Valideringsregler er ikke tilgjengelige",
 			"setDefaultAddressFailed": "Kunne ikke angi standardadresse",
 			"dummyNotAllowed": "Testbetaling er ikke tilgjengelig i dette miljøet.",
-			"stripeNotEnabled": "Stripe-betalinger er ikke aktivert i dette miljøet. Sett NEXT_PUBLIC_ENABLE_STRIPE_PAYMENTS=true i butikken."
+			"stripeNotEnabled": "Stripe-betalinger er ikke aktivert i dette miljøet. Sett NEXT_PUBLIC_ENABLE_STRIPE_PAYMENTS=true i butikken.",
+			"upiNotEnabled": "UPI payments are not enabled on this storefront.",
+			"upiTransactionIdInvalid": "The UPI transaction ID is not valid."
 		},
 		"gateways": {
 			"noneTitle": "Ingen betalingsgateway konfigurert",
@@ -630,7 +658,13 @@
 			"paymentFailed": "Betaling mislyktes",
 			"paymentTryAgain": "Betaling mislyktes. Prøv igjen.",
 			"paymentWebhookFailed": "Webhook for betalingsappen mislyktes. I Saleor Dashboard → Apps → Dummy Payment App, sjekk at webhook-leveranser lykkes.",
-			"paymentInitFailed": "Betalingen kunne ikke initialiseres. Sjekk at betalingsappen kjører i Saleor."
+			"paymentInitFailed": "Betalingen kunne ikke initialiseres. Sjekk at betalingsappen kjører i Saleor.",
+			"upiMisconfiguredTitle": "UPI payments are not configured",
+			"upiMisconfiguredBody": "Set NEXT_PUBLIC_UPI_VPA (a valid UPI ID) and NEXT_PUBLIC_UPI_PAYEE_NAME on the storefront, then rebuild.",
+			"upiCurrencyUnsupported": "UPI is only available for orders in Indian Rupees (INR).",
+			"upiUnpaidOrdersDisabled": "We couldn't place your order — this store isn't set up to accept UPI orders yet. Please contact us. (Store admin: enable “Allow unpaid orders” for this channel in Saleor Dashboard → Channels.)",
+			"upiTransactionIdInvalid": "Use only letters and numbers (6–35 characters).",
+			"upiTransactionIdRequired": "Enter the UPI transaction ID / UTR after paying."
 		}
 	}
 }

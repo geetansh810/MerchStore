@@ -31,6 +31,8 @@ interface MobileStickyActionProps {
 	/** Show payment trust copy above the CTA (payment step, server-submit flows). */
 	showPaymentTrust?: boolean;
 	paymentTrustProvider?: PaymentTrustProvider;
+	/** Overrides the payment-step button label (e.g. manual UPI "I've paid — place order"). */
+	actionLabel?: string;
 }
 
 /**
@@ -48,6 +50,7 @@ export const MobileStickyAction: FC<MobileStickyActionProps> = ({
 	type = "button",
 	showPaymentTrust = false,
 	paymentTrustProvider = "default",
+	actionLabel,
 }) => {
 	const t = useTranslations("checkout.actions");
 	const paymentStep = useCheckoutStepNumber("PAYMENT", isShippingRequired);
@@ -58,6 +61,7 @@ export const MobileStickyAction: FC<MobileStickyActionProps> = ({
 		if (isLoading && loadingText) return loadingText;
 
 		if (step === paymentStep) {
+			if (actionLabel) return actionLabel;
 			return total ? t("payTotal", { total }) : t("payNow");
 		}
 

@@ -24,6 +24,14 @@ export type TransactionInitializeActionResult =
 	| { ok: true; data: NonNullable<TransactionInitializePayload> }
 	| { ok: false; error: string };
 
+/**
+ * Manual (gateway-less) payment details for `checkoutComplete`. The client never sends raw
+ * metadata — the server action re-validates this and builds the metadata itself.
+ */
+export type CheckoutCompleteOptions = {
+	manualPayment?: { method: "upi_qr"; transactionId?: string | null };
+};
+
 export type CheckoutCompleteActionResult =
 	| { ok: true; orderId: string; orderViewToken: string }
 	| { ok: false; error: string; fieldErrors?: CheckoutFieldError[] };

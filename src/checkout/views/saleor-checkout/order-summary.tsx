@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FC, type FormEvent } from "react";
 import Image from "next/image";
-import { Tag, ShieldCheck, RotateCcw, Truck, ChevronDown, ShoppingBag, X } from "lucide-react";
+import { Tag, ShieldCheck, ChevronDown, ShoppingBag, X } from "lucide-react";
 import { Button } from "@/ui/components/ui/button";
 import { Input } from "@/ui/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -25,6 +25,8 @@ interface LineItem {
 	quantity: number;
 	name: string;
 	attributes: string[];
+	/** Name to print on personalised products (line metadata). */
+	personalisedName?: string | null;
 	imageUrl?: string | null;
 	imageAlt?: string | null;
 	totalAmount: number;
@@ -119,6 +121,7 @@ function extractCheckoutData(checkout: CheckoutFragment): OrderSummaryData {
 			quantity: line.quantity,
 			name: checkoutLineDisplayName(line),
 			attributes: translatedAttributeLabels(line.variant?.attributes),
+			personalisedName: line.personalisedName ?? null,
 			imageUrl: image?.url,
 			imageAlt: image?.alt,
 			totalAmount: line.totalPrice?.gross?.amount || 0,
@@ -144,6 +147,7 @@ function extractOrderData(order: OrderFragment): OrderSummaryData {
 			quantity: line.quantity,
 			name: orderLineDisplayName(line),
 			attributes: translatedAttributeLabels(line.variant?.attributes),
+			personalisedName: line.personalisedName ?? null,
 			imageUrl: line.thumbnail?.url,
 			imageAlt: line.thumbnail?.alt,
 			totalAmount: line.totalPrice?.gross?.amount || 0,
@@ -337,6 +341,11 @@ export const OrderSummary: FC<OrderSummaryProps> = ({
 												{line.attributes.join(" / ")}
 											</p>
 										)}
+										{line.personalisedName ? (
+											<p className="mt-0.5 truncate text-xs text-muted-foreground">
+												{tCommon("personalisedName", { name: line.personalisedName })}
+											</p>
+										) : null}
 										{unavailableIds.has(line.id) ? (
 											<div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1">
 												<p className="text-xs font-medium text-destructive">{t("soldOut")}</p>
@@ -410,32 +419,10 @@ export const OrderSummary: FC<OrderSummaryProps> = ({
 						</div>
 					</section>
 
-					{/* Trust/Social proof */}
-					<footer className="grid grid-cols-3 gap-2 border-t border-border bg-secondary/30 px-5 py-4">
-						<div className="flex flex-col items-center rounded-lg bg-secondary p-2.5 text-center">
-							<ShieldCheck className="mb-1 h-4 w-4 text-muted-foreground" />
-							<span className="text-[10px] leading-tight text-muted-foreground">
-								Secure
-								<br />
-								checkout
-							</span>
-						</div>
-						<div className="flex flex-col items-center rounded-lg bg-secondary p-2.5 text-center">
-							<RotateCcw className="mb-1 h-4 w-4 text-muted-foreground" />
-							<span className="text-[10px] leading-tight text-muted-foreground">
-								30-day
-								<br />
-								returns
-							</span>
-						</div>
-						<div className="flex flex-col items-center rounded-lg bg-secondary p-2.5 text-center">
-							<Truck className="mb-1 h-4 w-4 text-muted-foreground" />
-							<span className="text-[10px] leading-tight text-muted-foreground">
-								Free
-								<br />
-								shipping
-							</span>
-						</div>
+					{/* Trust signal — returns/shipping badges stay off until the store confirms those terms. */}
+					<footer className="flex items-center justify-center gap-1.5 border-t border-border bg-secondary/30 px-5 py-3 text-xs text-muted-foreground">
+						<ShieldCheck className="h-4 w-4" aria-hidden />
+						<span>Secure checkout</span>
 					</footer>
 				</div>
 			</div>

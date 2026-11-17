@@ -37,8 +37,8 @@ export interface CategoryTileGridProps {
 }
 
 const columnsClassName: Record<CategoryTileColumns, string> = {
-	2: "sm:grid-cols-2",
-	3: "sm:grid-cols-2 lg:grid-cols-3",
+	2: "grid-cols-2",
+	3: "grid-cols-2 lg:grid-cols-3",
 	4: "grid-cols-2 lg:grid-cols-4",
 };
 
@@ -102,7 +102,7 @@ export function CategoryTileGrid({
 				cta={cta}
 				className="mb-10"
 			/>
-			<ul className={cn("grid list-none gap-4 lg:gap-6", columnsClassName[columns])}>
+			<ul className={cn("grid list-none gap-3 sm:gap-4 lg:gap-6", columnsClassName[columns])}>
 				{tiles.map((tile) => (
 					<li key={tile.href}>
 						{isContain ? (
@@ -157,12 +157,14 @@ export function CategoryTileGrid({
 									className="absolute inset-0 bg-gradient-to-t from-foreground/75 via-foreground/15 to-transparent"
 									aria-hidden="true"
 								/>
-								<div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-6">
+								<div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 sm:gap-3 sm:p-6">
 									<div>
 										{tile.subtitle ? (
 											<p className="text-eyebrow uppercase text-background/80">{tile.subtitle}</p>
 										) : null}
-										<h3 className="text-h3 text-background">{tile.title}</h3>
+										<h3 className="text-base font-semibold leading-tight text-background sm:text-h3">
+											{tile.title}
+										</h3>
 									</div>
 									<ArrowRight
 										className="h-5 w-5 shrink-0 text-background transition-transform duration-base ease-standard motion-reduce:transition-none md:group-hover:translate-x-1"

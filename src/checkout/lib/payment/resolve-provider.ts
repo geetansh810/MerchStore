@@ -8,6 +8,7 @@ import {
 	findEnabledIntegratedGateway,
 	hasUnsupportedPaymentGateway,
 } from "./integrated-gateways";
+import { getUpiQrConfig } from "./providers/upi-qr";
 import { type PaymentGatewayLike, type ResolvedPaymentProvider } from "./types";
 
 function hasSubstantiveGateway(gateways: ReadonlyArray<PaymentGatewayLike>): boolean {
@@ -18,6 +19,15 @@ function hasSubstantiveGateway(gateways: ReadonlyArray<PaymentGatewayLike>): boo
 export function resolvePaymentProvider(
 	gateways: ReadonlyArray<PaymentGatewayLike> | null | undefined,
 ): ResolvedPaymentProvider {
+	// Manual UPI mode is gateway-less: it wins over any gateway Saleor exposes.
+	const upi = getUpiQrConfig();
+	if (upi.status === "ok") {
+		return { type: "upi_qr", submitMode: "server", config: upi.config };
+	}
+	if (upi.status === "misconfigured") {
+		return { type: "upi_qr_misconfigured", reason: upi.reason };
+	}
+
 	const list = gateways ?? [];
 
 	const integrated = findEnabledIntegratedGateway(list);
@@ -50,5 +60,5 @@ export function usesClientPaymentSubmit(provider: ResolvedPaymentProvider): bool
 
 /** Whether the checkout Pay button can run for the resolved provider. */
 export function canSubmitPayment(provider: ResolvedPaymentProvider): boolean {
-	return provider.type === "dummy" && provider.submitMode === "server";
+	return provider.type === "upi_qr" || (provider.type === "dummy" && provider.submitMode === "server");
 }

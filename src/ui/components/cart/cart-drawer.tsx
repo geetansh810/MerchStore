@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { LinkWithChannel } from "@/ui/atoms/link-with-channel";
-import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Truck, RotateCcw } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Truck } from "lucide-react";
 import { Button, buttonClassName } from "@/ui/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetCloseButton } from "@/ui/components/ui/sheet";
 import { useCart } from "./cart-context";
@@ -23,6 +23,8 @@ import { formatContentLabel } from "@/lib/content/format-label";
 interface CartLine {
 	id: string;
 	quantity: number;
+	/** Name to print on personalised products (line metadata). */
+	personalisedName?: string | null;
 	totalPrice: {
 		gross: {
 			amount: number;
@@ -177,9 +179,6 @@ export function CartDrawer({
 			? Math.min((subtotal / freeShippingThreshold) * 100, 100)
 			: 100;
 	const amountToFreeShipping = freeShippingEnabled ? Math.max(freeShippingThreshold - subtotal, 0) : 0;
-	const returnsLabel = formatContentLabel(cart.trust.returnsLabel, {
-		returnsWindowDays: policies.returns.windowDays,
-	});
 
 	return (
 		<Sheet open={isOpen} onOpenChange={(open) => !open && closeCart()}>
@@ -298,6 +297,11 @@ export function CartDrawer({
 															</div>
 														) : line.variant.name && line.variant.name !== line.variant.id ? (
 															<p className="mt-1 text-xs text-muted-foreground">{line.variant.name}</p>
+														) : null}
+														{line.personalisedName ? (
+															<p className="mt-1 text-xs text-muted-foreground">
+																{t("personalisedName", { name: line.personalisedName })}
+															</p>
 														) : null}
 													</div>
 													<Button
@@ -422,19 +426,15 @@ export function CartDrawer({
 							</LinkWithChannel>
 						</div>
 
-						{/* Trust Signals */}
-						<div className="flex items-center justify-center gap-6 border-t border-border px-6 pb-4 pt-4 text-xs text-muted-foreground">
-							{freeShippingEnabled && (
+						{/* Trust Signals — no returns promise until the store confirms its policy. */}
+						{freeShippingEnabled && (
+							<div className="flex items-center justify-center gap-6 border-t border-border px-6 pb-4 pt-4 text-xs text-muted-foreground">
 								<span className="flex items-center gap-1.5">
 									<Truck className="h-4 w-4" />
 									{cart.trust.freeShippingPrefix} {formatMoney(freeShippingThreshold, currency, intlLocale)}
 								</span>
-							)}
-							<span className="flex items-center gap-1.5">
-								<RotateCcw className="h-4 w-4" />
-								{returnsLabel}
-							</span>
-						</div>
+							</div>
+						)}
 					</div>
 				)}
 			</SheetContent>

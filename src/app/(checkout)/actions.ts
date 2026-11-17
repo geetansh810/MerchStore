@@ -62,11 +62,13 @@ import {
 	type AddressInput,
 	type AddressTypeEnum,
 	type CountryCode,
+	type MetadataInput,
 } from "@/checkout/graphql/generated/operations";
 import type {
 	AddressValidationRulesActionResult,
 	CheckoutActionResult,
 	CheckoutCompleteActionResult,
+	CheckoutCompleteOptions,
 	CheckoutFieldError,
 	DeliveryOptionsActionResult,
 	PaymentGatewaysInitializeActionResult,
@@ -81,8 +83,15 @@ import {
 	hasMaterialCheckoutTotalChange,
 } from "@/checkout/lib/payment/checkout-pay-amount";
 import { getStripePaymentGuardError, isStripePaymentEnabled } from "@/checkout/lib/payment/providers/stripe";
+import {
+	buildUpiOrderMetadata,
+	getUpiQrConfig,
+	isUpiTransactionIdBlocking,
+	validateUpiTransactionId,
+} from "@/checkout/lib/payment/providers/upi-qr";
 import { buildMarketingConsentMetadata } from "@/checkout/lib/marketing-consent";
 import { enrichCheckoutCommerceContext } from "@/checkout/lib/server/enrich-commerce-context";
+import { readPersonalisedLinesOrderMetadata } from "@/checkout/lib/server/personalised-lines-metadata";
 import { fetchCheckoutOnServer } from "@/checkout/lib/server/fetch-checkout";
 import { getCheckoutServerTranslations } from "@/checkout/lib/server/get-checkout-server-translations";
 import { toCheckoutActionResult } from "@/checkout/lib/server/mutation-result";
@@ -561,12 +570,43 @@ export async function processCheckoutTransaction(
 	return { ok: true, data: payload };
 }
 
-export async function runCheckoutComplete(checkoutId: string): Promise<CheckoutCompleteActionResult> {
+export async function runCheckoutComplete(
+	checkoutId: string,
+	options?: CheckoutCompleteOptions,
+): Promise<CheckoutCompleteActionResult> {
+	// Manual payment: never trust client-built metadata — re-validate and build it here.
+	let metadata: MetadataInput[] | undefined;
+	if (options?.manualPayment) {
+		const { server: t } = await getCheckoutServerTranslations();
+		const upi = getUpiQrConfig();
+		if (upi.status !== "ok" || options.manualPayment.method !== "upi_qr") {
+			return { ok: false, error: t("upiNotEnabled") };
+		}
+		const validation = validateUpiTransactionId(options.manualPayment.transactionId, {
+			required: upi.config.requireTransactionId,
+		});
+		if (isUpiTransactionIdBlocking(validation)) {
+			return { ok: false, error: t("upiTransactionIdInvalid") };
+		}
+		metadata = buildUpiOrderMetadata({
+			checkoutId,
+			transactionId: validation.status === "empty" ? null : validation.value,
+			vpa: upi.config.vpa,
+		});
+	}
+
 	// Before complete — Saleor copies checkout public metadata onto the order.
 	await enrichCheckoutCommerceContext(checkoutId);
 
+	// Order-level copy of personalised names (survives any line-metadata edge case, and gives the
+	// merchant one readable field in Dashboard → Order → Metadata).
+	const personalisedLinesMetadata = await readPersonalisedLinesOrderMetadata(checkoutId);
+	if (personalisedLinesMetadata.length > 0) {
+		metadata = [...(metadata ?? []), ...personalisedLinesMetadata];
+	}
+
 	const result = await mutate(checkoutCompleteDocument, {
-		variables: { checkoutId },
+		variables: { checkoutId, metadata },
 	});
 
 	if (!result.ok) {

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { CheckCircle, Mail, MapPin, Package, CreditCard, Truck } from "lucide-react";
+import { CheckCircle, Mail, MapPin, Package, CreditCard, Truck, Wallet } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { clearPaymentCompleting } from "@/checkout/lib/payment/checkout-payment-completion";
@@ -15,7 +15,10 @@ import { OrderSummary } from "@/checkout/views/saleor-checkout/order-summary";
 import { OrderConfirmationPageShell } from "./order-confirmation-page-shell";
 import { PageNotFound } from "@/checkout/views/page-not-found";
 import { getCustomerOrderStatusLabel } from "@/lib/order-status";
+import { getOrderPaymentState, isUpiOrder } from "@/lib/order-payment-state";
 import { billingCityCountry } from "@/lib/order-view/sanitize";
+import { getFormattedMoney } from "@/checkout/lib/utils/money";
+import { OrderPaymentBadge } from "@/ui/components/order-payment-badge";
 import { buildStorefrontPath } from "@/lib/storefront-path";
 import { OrderEmailGate } from "./order-email-gate";
 
@@ -93,6 +96,10 @@ export const OrderConfirmation = () => {
 	const statusLabel = getCustomerOrderStatusLabel(tStatus, order.status, order.statusDisplay);
 	const method = order.deliveryMethod && "name" in order.deliveryMethod ? order.deliveryMethod : null;
 	const days = deliveryWindow(method);
+	const paymentState = getOrderPaymentState(order);
+	const isUpi = isUpiOrder(order);
+	const upiTransactionId =
+		order.upiTransactionId && order.upiTransactionId !== "not_provided" ? order.upiTransactionId : null;
 	const trackingNumbers =
 		order.fulfillments
 			?.map((fulfillment) => fulfillment.trackingNumber)
@@ -115,12 +122,26 @@ export const OrderConfirmation = () => {
 											{verified ? t("thankYou") : t("statusTitle")}
 										</h1>
 										<p className="mt-2 text-sm font-medium">{statusLabel}</p>
+										{verified && paymentState !== "unknown" ? (
+											<div className="mt-3 flex justify-center">
+												<OrderPaymentBadge
+													state={paymentState}
+													label={paymentState === "paid" ? t("paymentPaid") : t("paymentPendingVerification")}
+												/>
+											</div>
+										) : null}
 									</div>
 								</div>
 
 								<div className="overflow-hidden rounded-lg border border-border">
 									<div className="border-b border-border bg-secondary/50 p-4">
-										<h2 className="font-semibold">{verified ? t("confirmedTitle") : t("publicTitle")}</h2>
+										<h2 className="font-semibold">
+											{verified
+												? paymentState === "paid" || paymentState === "unknown"
+													? t("confirmedTitle")
+													: t("receivedTitle")
+												: t("publicTitle")}
+										</h2>
 										<p className="mt-1 text-sm text-muted-foreground">
 											{verified ? t("confirmedEmail", { email }) : t("publicBody")}
 										</p>
@@ -153,6 +174,27 @@ export const OrderConfirmation = () => {
 														<div>
 															<p className="text-sm font-medium">{t("billingAddress")}</p>
 															<p className="text-sm text-muted-foreground">{billingLabel}</p>
+														</div>
+													</div>
+												) : null}
+												{isUpi && paymentState !== "unknown" ? (
+													<div className="flex items-start gap-3">
+														<Wallet className="mt-0.5 h-5 w-5 text-muted-foreground" />
+														<div>
+															<p className="text-sm font-medium">{t("paymentTitle")}</p>
+															<p className="text-sm text-muted-foreground">{t("paymentMethodUpi")}</p>
+															{upiTransactionId ? (
+																<p className="text-sm text-muted-foreground">
+																	{t("upiTransactionId", { id: upiTransactionId })}
+																</p>
+															) : null}
+															{paymentState !== "paid" ? (
+																<p className="text-sm text-muted-foreground">
+																	{t("upiPendingBody", {
+																		amount: getFormattedMoney(order.total.gross),
+																	})}
+																</p>
+															) : null}
 														</div>
 													</div>
 												) : null}

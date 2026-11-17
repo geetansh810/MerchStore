@@ -16,6 +16,8 @@ const order = {
 	authorizeStatus: "FULLY_AUTHORIZED",
 	totalBalance: { amount: 0, currency: "EUR" },
 	totalCaptured: { amount: 10, currency: "EUR" },
+	upiTransactionId: "123456789012",
+	paymentMethodKey: "upi_qr",
 	total: { gross: { amount: 10, currency: "EUR" } },
 };
 
@@ -31,6 +33,8 @@ describe("sanitizeOrderForClient", () => {
 		expect(publicOrder.isPaid).toBeNull();
 		expect(publicOrder.chargeStatus).toBeNull();
 		expect(publicOrder.totalCaptured).toBeNull();
+		expect(publicOrder.upiTransactionId).toBeNull();
+		expect(publicOrder.paymentMethodKey).toBeNull();
 		expect(publicOrder.total).toEqual(order.total);
 		expect(publicOrder.number).toBe("1042");
 	});
@@ -40,6 +44,33 @@ describe("sanitizeOrderForClient", () => {
 		expect(verified.userEmail).toBe("ada@shop.example");
 		expect(verified.shippingAddress).toEqual(order.shippingAddress);
 		expect(verified.voucher).toBeNull();
+		expect(verified.upiTransactionId).toBe("123456789012");
+		expect(verified.paymentMethodKey).toBe("upi_qr");
+	});
+});
+
+describe("sanitizeOrderForClient personalised names", () => {
+	const withLines = {
+		...order,
+		lines: [
+			{ id: "l1", quantity: 1, personalisedName: "Asha" },
+			{ id: "l2", quantity: 2, personalisedName: null },
+		],
+	};
+
+	it("nulls line personalisedName on the public view", () => {
+		const publicOrder = sanitizeOrderForClient(withLines, "public");
+		expect(publicOrder.lines.map((line) => line.personalisedName)).toEqual([null, null]);
+		expect(publicOrder.lines.map((line) => line.quantity)).toEqual([1, 2]);
+	});
+
+	it("keeps line personalisedName when verified", () => {
+		const verified = sanitizeOrderForClient(withLines, "verified");
+		expect(verified.lines[0]?.personalisedName).toBe("Asha");
+	});
+
+	it("does not add a lines key when the order has none", () => {
+		expect("lines" in sanitizeOrderForClient(order, "public")).toBe(false);
 	});
 });
 

@@ -1,4 +1,5 @@
 import { brandConfig } from "@/config/brand";
+import { anniversaryCampaign, anniversaryLabel } from "@/config/campaign";
 import { STOREFRONT_CONTENT_VERSION, type StorefrontContent } from "@/lib/content/types";
 
 /**
@@ -14,18 +15,20 @@ export const defaultStorefrontContent = {
 	// numbers into strings, so the cart math, announcement, and trust labels never drift.
 	policies: {
 		shipping: {
-			freeShippingThreshold: 75,
+			// No free-shipping promise until the client confirms one.
+			freeShippingThreshold: null,
 		},
 		returns: {
-			windowDays: 30,
+			// Placeholder — confirm with the client.
+			windowDays: 7,
 		},
 	},
 	chrome: {
 		announcementBar: {
-			id: "",
-			message: "Free shipping on orders over {freeShippingThreshold}",
-			href: null,
-			linkLabel: null,
+			id: "af70-launch",
+			message: `Celebrating ${anniversaryCampaign.years} years of the ${anniversaryCampaign.honoree} — personalised mugs, flasks & diaries`,
+			href: `/collections/${anniversaryCampaign.collectionSlug}`,
+			linkLabel: "Shop now",
 			dismissible: true,
 		},
 		nav: {
@@ -36,47 +39,50 @@ export const defaultStorefrontContent = {
 	surfaces: {
 		homepage: {
 			hero: {
-				heading: "Discover our collection",
-				subheading: brandConfig.tagline,
-				primaryCtaLabel: "Shop all",
+				eyebrow: `${anniversaryCampaign.honoree} · ${anniversaryCampaign.years} Years`,
+				heading: `Happy ${anniversaryLabel}`,
+				subheading: `Celebrating ${anniversaryCampaign.years} years of the ${anniversaryCampaign.honoree} — commemorative gifts & merchandise.`,
+				primaryCtaLabel: "Shop the collection",
 			},
 			featuredCollection: {
-				heading: "Featured products",
-				collectionSlug: "featured-products",
-				limit: 8,
+				heading: `The ${anniversaryLabel} Collection`,
+				collectionSlug: anniversaryCampaign.collectionSlug,
+				// 12 > the 11 featured seed items, so the category tiles (derived from these products) cover every category.
+				limit: 12,
 			},
 			categories: {
 				heading: "Shop by category",
+				eyebrow: "Gifts & keepsakes",
 			},
 			photoCredits: [],
 			brandStory: {
-				heading: "Our story",
+				heading: "Seventy years of service",
 				paragraphs: [
-					"Tell shoppers who you are and what you stand for.",
-					"Edit this copy in Dashboard → Models → Storefront — Homepage.",
+					"Seven decades of dedication, discipline and pride. This collection brings that milestone home, with commemorative pieces made to be worn, gifted and kept.",
+					"Commemorative pieces for the anniversary — and our mugs, coffee flasks and diaries can be personalised with a name of your choice.",
 				],
 			},
 			values: {
-				heading: "Why shop with us",
+				heading: "Made for the occasion",
 				columns: [
 					{
-						title: "Quality",
-						text: "Share what makes your products worth choosing.",
+						title: "Commemorative designs",
+						text: `Designed to mark the ${anniversaryLabel.toLowerCase()}.`,
 					},
 					{
-						title: "Shipping",
-						text: "Describe how and when orders arrive.",
+						title: "Personalised gifts",
+						text: "Add a name to mugs, coffee flasks and diaries.",
 					},
 					{
-						title: "Returns",
-						text: "Easy returns within {returnsWindowDays} days.",
+						title: "Delivered across India",
+						text: "Shipping charges and delivery options are shown at checkout.",
 					},
 				],
 				columnsDesktop: 3,
 			},
 			editorial: {
 				heading: "From the shop",
-				paragraphs: ["Highlight a collection, seasonal story, or campaign — then edit this block in Models."],
+				paragraphs: ["Commemorative gifts and keepsakes for every member of the family."],
 				imagePosition: "right",
 				ctaLabel: "Explore collections",
 				image: null,
@@ -84,8 +90,8 @@ export const defaultStorefrontContent = {
 			},
 		},
 		products: {
-			title: "All Products",
-			description: "Browse our full catalog.",
+			title: "All Gifts",
+			description: brandConfig.description,
 		},
 		cart: {
 			empty: {

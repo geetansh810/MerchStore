@@ -19,6 +19,12 @@ const gatewayMessages = buildCheckoutGatewayMessages((key, values) => {
 		paymentTryAgain: "Try again",
 		paymentWebhookFailed: "Webhook failed",
 		paymentInitFailed: "Init failed",
+		upiMisconfiguredTitle: "UPI not configured title",
+		upiMisconfiguredBody: "UPI not configured",
+		upiCurrencyUnsupported: "UPI needs INR",
+		upiUnpaidOrdersDisabled: "Unpaid orders disabled",
+		upiTransactionIdInvalid: "Invalid UTR",
+		upiTransactionIdRequired: "UTR required",
 	};
 	return templates[key] ?? key;
 });

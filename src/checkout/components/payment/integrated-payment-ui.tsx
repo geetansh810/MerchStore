@@ -2,11 +2,16 @@
 
 import { type FC } from "react";
 import { type AddressFragment, type CheckoutFragment } from "@/checkout/graphql";
-import { isIntegratedPaymentProvider, type ResolvedPaymentProvider } from "@/checkout/lib/payment";
+import {
+	isIntegratedPaymentProvider,
+	isManualPaymentProvider,
+	type ResolvedPaymentProvider,
+} from "@/checkout/lib/payment";
 import { type CheckoutPriceChangeNotice } from "@/checkout/lib/payment/checkout-pay-amount";
 import { DummyPaymentPlaceholder } from "./dummy-payment-placeholder";
 import { StripePayment } from "./stripe/stripe-payment";
 import { type BillingAddressData } from "./billing-address-section";
+import { UpiPaymentPanel } from "./upi/upi-payment-panel";
 
 export type IntegratedPaymentUiProps = {
 	provider: ResolvedPaymentProvider;
@@ -23,6 +28,12 @@ export type IntegratedPaymentUiProps = {
 	onBillingErrors?: (errors: Record<string, string>, focusField?: string) => void;
 	onPriceChangeNotice?: (notice: CheckoutPriceChangeNotice) => void;
 	onPaymentActivityChange?: (active: boolean) => void;
+	manualPayment?: {
+		upiTransactionId: string;
+		onUpiTransactionIdChange: (value: string) => void;
+		upiTransactionIdError?: string;
+		disabled?: boolean;
+	};
 };
 
 /**
@@ -37,7 +48,24 @@ export const IntegratedPaymentUi: FC<IntegratedPaymentUiProps> = ({
 	onBillingErrors,
 	onPriceChangeNotice,
 	onPaymentActivityChange,
+	manualPayment,
 }) => {
+	if (isManualPaymentProvider(provider)) {
+		if (!checkout || !manualPayment) {
+			return null;
+		}
+		return (
+			<UpiPaymentPanel
+				config={provider.config}
+				checkout={checkout}
+				transactionId={manualPayment.upiTransactionId}
+				onTransactionIdChange={manualPayment.onUpiTransactionIdChange}
+				transactionIdError={manualPayment.upiTransactionIdError}
+				disabled={manualPayment.disabled}
+			/>
+		);
+	}
+
 	if (!isIntegratedPaymentProvider(provider)) {
 		return null;
 	}

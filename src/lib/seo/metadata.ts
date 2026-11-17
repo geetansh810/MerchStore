@@ -59,6 +59,7 @@ export const rootMetadata: Metadata = {
 	// Icons - with light/dark mode support
 	icons: {
 		icon: [
+			{ url: "/favicon.svg", type: "image/svg+xml" },
 			{ url: "/favicon.ico", sizes: "32x32" },
 			// Light mode (dark icon on light tabs)
 			{

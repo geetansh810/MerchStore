@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
+import { brandConfig } from "@/config/brand";
 import { ogBrandColors } from "@/lib/seo/og-brand-colors";
 
 /**
@@ -32,7 +33,7 @@ function clamp(value: string | null, maxLength: number): string {
 export async function GET(request: NextRequest) {
 	const { searchParams } = request.nextUrl;
 
-	const title = clamp(searchParams.get("title"), MAX_TITLE_LENGTH) || "Saleor Store";
+	const title = clamp(searchParams.get("title"), MAX_TITLE_LENGTH) || brandConfig.siteName;
 	const subtitle = clamp(searchParams.get("subtitle"), MAX_SUBTITLE_LENGTH);
 	const price = clamp(searchParams.get("price"), MAX_PRICE_LENGTH);
 

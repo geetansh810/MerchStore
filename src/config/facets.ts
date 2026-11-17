@@ -69,11 +69,16 @@ export const PLP_FACETS: readonly PlpFacetConfig[] = [
 ] as const;
 
 /** Static price buckets. Dynamic ranges flicker as the page sample changes. */
+export const PRICE_FILTER_CURRENCY_SYMBOL = "₹";
+
 export const STATIC_PRICE_RANGES = [
-	{ label: "Under $50", value: "0-50" },
-	{ label: "$50 - $100", value: "50-100" },
-	{ label: "$100 - $200", value: "100-200" },
-	{ label: "$200+", value: "200-" },
+	{ label: `Under ${PRICE_FILTER_CURRENCY_SYMBOL}500`, value: "0-500" },
+	{ label: `${PRICE_FILTER_CURRENCY_SYMBOL}500 - ${PRICE_FILTER_CURRENCY_SYMBOL}1,000`, value: "500-1000" },
+	{
+		label: `${PRICE_FILTER_CURRENCY_SYMBOL}1,000 - ${PRICE_FILTER_CURRENCY_SYMBOL}2,000`,
+		value: "1000-2000",
+	},
+	{ label: `${PRICE_FILTER_CURRENCY_SYMBOL}2,000+`, value: "2000-" },
 ] as const;
 
 export function getPlpFacetByParam(param: string): PlpFacetConfig | undefined {

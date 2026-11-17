@@ -107,6 +107,7 @@ fragment CheckoutFragment on Checkout {
 fragment CheckoutLineFragment on CheckoutLine {
 	id
 	quantity
+	personalisedName: metafield(key: "personalised_name")
 	totalPrice {
 		gross {
 			currency
@@ -190,6 +191,18 @@ query checkoutCommerceContext($id: ID!) {
 		metadata {
 			key
 			value
+		}
+		# Personalised-name lines, copied onto order metadata at complete (see personalised-lines-metadata.ts).
+		lines {
+			quantity
+			personalisedName: metafield(key: "personalised_name")
+			variant {
+				id
+				sku
+				product {
+					name
+				}
+			}
 		}
 	}
 }
@@ -390,8 +403,8 @@ mutation checkoutRemovePromoCode(
 	}
 }
 
-mutation checkoutComplete($checkoutId: ID!) {
-	checkoutComplete(id: $checkoutId) {
+mutation checkoutComplete($checkoutId: ID!, $metadata: [MetadataInput!]) {
+	checkoutComplete(id: $checkoutId, metadata: $metadata) {
 		errors {
 			...CheckoutErrorFragment
 		}

@@ -1,4 +1,5 @@
 import { type PaymentGatewayFragment } from "@/checkout/graphql";
+import { type UpiQrConfig, type UpiQrConfigResult } from "./providers/upi-qr";
 
 export type PaymentGatewayLike = Pick<PaymentGatewayFragment, "id" | "name">;
 
@@ -19,15 +20,26 @@ export type PaymentContext = {
 	checkoutId: string;
 	/** Live gross total from Saleor — required so authorization matches checkoutComplete. */
 	amount: number;
+	/** ISO currency of the live total — manual providers (UPI) only accept INR. */
+	currency?: string;
+	/** Raw UPI transaction ID / UTR typed by the shopper (validated again server-side). */
+	upiTransactionId?: string;
 };
 
 type IntegratedPaymentProvider =
 	| { type: "stripe"; gateway: PaymentGatewayLike; submitMode: PaymentSubmitMode }
 	| { type: "dummy"; gateway: PaymentGatewayLike; submitMode: PaymentSubmitMode };
 
+/** Gateway-less manual payment: QR shown, order created unpaid, merchant verifies later. */
+export type UpiQrPaymentProvider = { type: "upi_qr"; submitMode: "server"; config: UpiQrConfig };
+
+type UpiQrMisconfiguredReason = Extract<UpiQrConfigResult, { status: "misconfigured" }>["reason"];
+
 /** Which payment integration handles the current checkout. */
 export type ResolvedPaymentProvider =
 	| IntegratedPaymentProvider
+	| UpiQrPaymentProvider
+	| { type: "upi_qr_misconfigured"; reason: UpiQrMisconfiguredReason }
 	| { type: "none" }
 	| { type: "unsupported"; gateways: ReadonlyArray<PaymentGatewayLike> }
 	| { type: "dummy_missing" };
@@ -46,4 +58,8 @@ export function isIntegratedPaymentProvider(
 	provider: ResolvedPaymentProvider,
 ): provider is IntegratedPaymentProvider {
 	return provider.type === "stripe" || provider.type === "dummy";
+}
+
+export function isManualPaymentProvider(provider: ResolvedPaymentProvider): provider is UpiQrPaymentProvider {
+	return provider.type === "upi_qr";
 }

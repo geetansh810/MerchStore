@@ -41,7 +41,7 @@ export function BrowseHeaderFrame({ params }: { params: BrowseRouteParams }) {
 
 					<Suspense
 						fallback={
-							<nav className="hidden flex-1 justify-center lg:ml-10 lg:flex xl:ml-14" aria-hidden="true">
+							<nav className="hidden flex-1 justify-center xl:ml-10 xl:flex" aria-hidden="true">
 								<div className="h-4 w-48 animate-pulse rounded bg-secondary" />
 							</nav>
 						}
@@ -52,7 +52,7 @@ export function BrowseHeaderFrame({ params }: { params: BrowseRouteParams }) {
 					<Suspense
 						fallback={
 							<div
-								className="hidden md:flex md:max-w-md md:flex-1 md:justify-end lg:flex-none"
+								className="hidden md:flex md:max-w-md md:flex-1 md:justify-end xl:flex-none"
 								aria-hidden="true"
 							>
 								<div className="h-10 w-full max-w-md animate-pulse rounded-lg bg-secondary" />

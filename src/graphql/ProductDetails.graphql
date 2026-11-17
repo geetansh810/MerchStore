@@ -46,6 +46,9 @@ query ProductDetails(
 		productType {
 			slug
 		}
+		# Personalisation config (product metadata): "name" enables the name-to-print field on the PDP.
+		personalisation: metafield(key: "personalisation")
+		personalisationMaxLength: metafield(key: "personalisation_max_length")
 		# Cheap probe for JSON-LD + budget branching (no variant payloads).
 		productVariants(first: 1) {
 			totalCount

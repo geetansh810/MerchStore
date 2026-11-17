@@ -11,12 +11,14 @@
 			"continueShopping": "Continue Shopping",
 			"removeItem": "Remove {product}",
 			"decreaseQuantity": "Decrease quantity",
-			"increaseQuantity": "Increase quantity"
+			"increaseQuantity": "Increase quantity",
+			"personalisedName": "Name: {name}"
 		},
 		"page": {
 			"title": "Shopping Cart",
 			"quantity": "Qty: {count}",
 			"variant": "Variant: {name}",
+			"personalisedName": "Name: {name}",
 			"yourTotal": "Your Total",
 			"shippingNote": "Shipping will be calculated in the next step",
 			"checkout": "Checkout"
@@ -60,13 +62,17 @@
 			"searchOptions": "Search {label}",
 			"noMatchingOptions": "No matching options"
 		},
+		"personalisation": {
+			"label": "Name to print",
+			"hint": "Up to {max} characters — letters, spaces, apostrophes, hyphens and full stops."
+		},
 		"attributes": {
 			"description": "Description",
 			"productDetails": "Product Details",
 			"careInstructions": "Care Instructions",
 			"shippingReturns": "Shipping & Returns",
-			"shippingBody": "Free shipping on orders over {freeShippingThreshold}. Standard delivery 3-5 business days.",
-			"returnsBody": "Free returns within {returnsWindowDays} days of purchase. Items must be unworn with tags attached.",
+			"shippingBody": "Delivered across India. Shipping charges are shown at checkout.",
+			"returnsBody": "For returns or exchanges, please contact us with your order number.",
 			"yes": "Yes",
 			"no": "No"
 		},
@@ -213,6 +219,7 @@
 			"hidePassword": "Hide password",
 			"free": "Free",
 			"qty": "Qty: {count}",
+			"personalisedName": "Name: {name}",
 			"itemCount": "{count, plural, one {# item} other {# items}}",
 			"notSet": "Not set",
 			"change": "Change",
@@ -329,6 +336,9 @@
 			"billingAddress": "Billing Address",
 			"paymentMethod": "Payment Method",
 			"paid": "Paid",
+			"paymentPendingVerification": "Payment pending verification",
+			"paymentMethodUpi": "UPI",
+			"upiTransactionId": "UPI transaction ID: {id}",
 			"needHelp": "Need Help?",
 			"signInRequired": "Sign in to view this order.",
 			"loadFailed": "We couldn't load this order. Please try again.",
@@ -424,6 +434,7 @@
 			"payTotal": "Pay {total}",
 			"completeOrder": "Complete order",
 			"placingOrder": "Placing order…",
+			"upiPlaceOrder": "I've paid — place order",
 			"creatingOrder": "Creating order…",
 			"processingPayment": "Processing payment…",
 			"continueShopping": "Continue shopping",
@@ -563,13 +574,33 @@
 			"authorizedBody": "Your payment is authorized (capture happens when we fulfill the order). Tap below to place your order — you will not be charged again at checkout.",
 			"freeOrderBody": "Your order total is {total}. No payment is required — confirm below to place your order.",
 			"dummyTestMode": "Test mode. No card details needed — use Pay to complete a test order.",
-			"stripeLoadTitle": "Could not load Stripe"
+			"stripeLoadTitle": "Could not load Stripe",
+			"upi": {
+				"title": "Pay with UPI",
+				"scanInstruction": "Scan with any UPI app (Google Pay, PhonePe, Paytm, BHIM) and pay exactly {amount}.",
+				"staticQrInstruction": "Scan with any UPI app and enter {amount} as the amount.",
+				"qrAlt": "UPI QR code to pay {amount} to {payee}",
+				"payeeLabel": "Pay to",
+				"upiIdLabel": "UPI ID",
+				"amountLabel": "Amount",
+				"referenceLabel": "Payment note",
+				"copy": "Copy",
+				"copied": "Copied",
+				"openApp": "Open in UPI app",
+				"transactionIdLabel": "UPI transaction ID / UTR (optional)",
+				"transactionIdLabelRequired": "UPI transaction ID / UTR",
+				"transactionIdHint": "Find the 12-digit UTR / UPI Ref No. in your UPI app's payment details. It helps us verify your payment faster.",
+				"transactionIdUnusual": "UTRs are usually 12 digits — please double-check. You can still place the order.",
+				"verificationNotice": "We'll confirm your order once we've verified your payment.",
+				"currencyUnsupported": "UPI is only available for orders in Indian Rupees (INR)."
+			}
 		},
 		"confirmation": {
 			"orderNumber": "Order #{number}",
 			"thankYou": "Thank you for your order!",
 			"statusTitle": "Order status",
 			"confirmedTitle": "Your order is confirmed",
+			"receivedTitle": "We've received your order",
 			"publicTitle": "Your order",
 			"publicBody": "Items and totals are shown here. Confirm the email used at checkout to see the address and tracking.",
 			"confirmedEmail": "You'll receive a confirmation email at {email}",
@@ -580,7 +611,13 @@
 			"deliveryDays": "{days} days",
 			"tracking": "Tracking",
 			"createAccount": "Save this order to an account",
-			"signIn": "Sign in to view all order details"
+			"signIn": "Sign in to view all order details",
+			"paymentTitle": "Payment",
+			"paymentPaid": "Paid",
+			"paymentPendingVerification": "Payment pending verification",
+			"paymentMethodUpi": "UPI",
+			"upiTransactionId": "UPI transaction ID: {id}",
+			"upiPendingBody": "We'll confirm by email once we verify your UPI payment of {amount}."
 		},
 		"orderFind": {
 			"title": "Find your order",
@@ -614,7 +651,9 @@
 			"validationRulesUnavailable": "Validation rules not available",
 			"setDefaultAddressFailed": "Failed to set default address",
 			"dummyNotAllowed": "Test payment is not available in this environment.",
-			"stripeNotEnabled": "Stripe payments are not enabled in this environment. Set NEXT_PUBLIC_ENABLE_STRIPE_PAYMENTS=true on the storefront."
+			"stripeNotEnabled": "Stripe payments are not enabled in this environment. Set NEXT_PUBLIC_ENABLE_STRIPE_PAYMENTS=true on the storefront.",
+			"upiNotEnabled": "UPI payments are not enabled on this storefront.",
+			"upiTransactionIdInvalid": "The UPI transaction ID is not valid."
 		},
 		"gateways": {
 			"noneTitle": "No payment gateway configured",
@@ -629,7 +668,13 @@
 			"paymentFailed": "Payment failed",
 			"paymentTryAgain": "Payment failed. Please try again.",
 			"paymentWebhookFailed": "Payment app webhook failed. In Saleor Dashboard → Apps → Dummy Payment App, check webhook deliveries are succeeding.",
-			"paymentInitFailed": "Payment could not be initialized. Check that the payment app is running in Saleor."
+			"paymentInitFailed": "Payment could not be initialized. Check that the payment app is running in Saleor.",
+			"upiMisconfiguredTitle": "UPI payments are not configured",
+			"upiMisconfiguredBody": "Set NEXT_PUBLIC_UPI_VPA (a valid UPI ID) and NEXT_PUBLIC_UPI_PAYEE_NAME on the storefront, then rebuild.",
+			"upiCurrencyUnsupported": "UPI is only available for orders in Indian Rupees (INR).",
+			"upiUnpaidOrdersDisabled": "We couldn't place your order — this store isn't set up to accept UPI orders yet. Please contact us. (Store admin: enable “Allow unpaid orders” for this channel in Saleor Dashboard → Channels.)",
+			"upiTransactionIdInvalid": "Use only letters and numbers (6–35 characters).",
+			"upiTransactionIdRequired": "Enter the UPI transaction ID / UTR after paying."
 		}
 	}
 }

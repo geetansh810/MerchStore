@@ -145,3 +145,49 @@ describe("canSubmitPayment", () => {
 		expect(canSubmitPayment({ type: "unsupported", gateways: [] })).toBe(false);
 	});
 });
+
+describe("resolvePaymentProvider (UPI QR mode)", () => {
+	const upiConfig = {
+		vpa: "shop@okicici",
+		payeeName: "My Shop",
+		staticQrImagePath: null,
+		requireTransactionId: false,
+	};
+
+	afterEach(() => {
+		vi.unstubAllEnvs();
+	});
+
+	function enableUpi() {
+		vi.stubEnv("NEXT_PUBLIC_PAYMENT_MODE", "upi_qr");
+		vi.stubEnv("NEXT_PUBLIC_UPI_VPA", "shop@okicici");
+		vi.stubEnv("NEXT_PUBLIC_UPI_PAYEE_NAME", "My Shop");
+	}
+
+	it("returns upi_qr regardless of the gateways Saleor exposes", () => {
+		enableUpi();
+		vi.stubEnv("NODE_ENV", "development");
+		const expected = { type: "upi_qr", submitMode: "server", config: upiConfig };
+		expect(resolvePaymentProvider([])).toEqual(expected);
+		expect(resolvePaymentProvider(null)).toEqual(expected);
+		expect(resolvePaymentProvider([{ id: "saleor.io.dummy-payment-app", name: "Dummy" }])).toEqual(expected);
+		expect(resolvePaymentProvider([{ id: "saleor.app.payment.stripe", name: "Stripe" }])).toEqual(expected);
+	});
+
+	it("returns upi_qr_misconfigured when the VPA is missing", () => {
+		vi.stubEnv("NEXT_PUBLIC_PAYMENT_MODE", "upi_qr");
+		expect(resolvePaymentProvider([])).toEqual({ type: "upi_qr_misconfigured", reason: "vpa_missing" });
+	});
+
+	it("can submit server-side and does not use client submit", () => {
+		enableUpi();
+		const provider = resolvePaymentProvider([]);
+		expect(canSubmitPayment(provider)).toBe(true);
+		expect(usesClientPaymentSubmit(provider)).toBe(false);
+		expect(canSubmitPayment({ type: "upi_qr_misconfigured", reason: "vpa_missing" })).toBe(false);
+	});
+
+	it("falls back to existing resolution when the mode is unset", () => {
+		expect(resolvePaymentProvider([])).toEqual({ type: "none" });
+	});
+});

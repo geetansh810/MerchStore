@@ -6,6 +6,7 @@ import {
 	type ApiAddressField,
 } from "../../components/address-form/types";
 import { getCountryName } from "@/checkout/lib/utils/locale";
+import { FALLBACK_ADDRESS_COUNTRY } from "@/checkout/lib/default-address-country";
 import {
 	type AddressFragment,
 	type AddressInput,
@@ -26,7 +27,7 @@ export const getEmptyAddressFormData = (): AddressFormData => ({
 	countryArea: "",
 	postalCode: "",
 	phone: "",
-	countryCode: "US",
+	countryCode: FALLBACK_ADDRESS_COUNTRY,
 });
 
 export const getEmptyAddress = (): AddressFragment => {
@@ -117,7 +118,7 @@ export const getAddressFormDataFromAddress = (address: OptionalAddress): Address
 	if (!address) {
 		return {
 			...getEmptyAddressFormData(),
-			countryCode: "US",
+			countryCode: FALLBACK_ADDRESS_COUNTRY,
 		};
 	}
 

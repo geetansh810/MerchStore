@@ -7,9 +7,11 @@ import { addVariantToCart } from "@/app/actions";
 import { getTranslations } from "next-intl/server";
 import { resolvePdpVariants } from "@/lib/catalog/get-product-data";
 import { pickTranslatedSlug } from "@/lib/saleor-translations";
+import { resolvePersonalisationConfig, validatePersonalisedName } from "@/lib/personalisation";
 
 import { AddToCart } from "./add-to-cart";
 import { NonMatrixBuyBox } from "./non-matrix-buy-box";
+import { PersonalisedNameField } from "./personalised-name-field";
 import { VariantSelectionSection } from "./variant-selection";
 import { StickyBar } from "./sticky-bar";
 import { Badge } from "@/ui/components/ui/badge";
@@ -50,6 +52,11 @@ export async function VariantSectionDynamic({
 			sku: skuParam,
 		}),
 	]);
+
+	const personalisation = resolvePersonalisationConfig({
+		personalisation: product.personalisation,
+		maxLength: product.personalisationMaxLength,
+	});
 
 	const { variants, totalCount, overBudget, strategy } = variantResult;
 	const productWithVariants: Product = {
@@ -115,11 +122,22 @@ export async function VariantSectionDynamic({
 			: null;
 	const secureCheckoutLabel = content.surfaces.checkout.trust.secureCheckout;
 
-	async function addToCart() {
+	async function addToCart(formData: FormData) {
 		"use server";
 
 		if (!selectedVariantID) {
 			return;
+		}
+
+		// `maxLength` comes from this server closure, never from the client.
+		let personalisedName: string | null = null;
+		if (personalisation) {
+			const result = validatePersonalisedName(formData.get("personalisedName"), personalisation.maxLength);
+			if (!result.ok) {
+				console.error("Add to cart: invalid personalised name", result.reason);
+				return;
+			}
+			personalisedName = result.value;
 		}
 
 		try {
@@ -130,6 +148,7 @@ export async function VariantSectionDynamic({
 				variantId: selectedVariantID,
 				value: linePrice?.amount ?? 0,
 				currency: linePrice?.currency ?? "",
+				personalisedName,
 			});
 		} catch (error) {
 			console.error("Add to cart failed:", error);
@@ -167,6 +186,14 @@ export async function VariantSectionDynamic({
 
 			<form action={addToCart} className="order-3 mt-4 space-y-6">
 				{buyBox}
+
+				{personalisation ? (
+					<PersonalisedNameField
+						maxLength={personalisation.maxLength}
+						label={t("personalisation.label")}
+						hint={t("personalisation.hint", { max: personalisation.maxLength })}
+					/>
+				) : null}
 
 				<AddToCart
 					price={price}

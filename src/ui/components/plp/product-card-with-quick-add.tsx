@@ -18,6 +18,10 @@ interface ProductCardWithQuickAddProps {
  * Client wrapper for PLP cards with quick-add. Skips the overlay when the product
  * has multiple variants or is over the PDP variant cap (shopper must use the PDP —
  * never open a variant sheet for over-cap matrices).
+ *
+ * NOTE: not wired anywhere today. If it is enabled, exclude products with `personalisation`
+ * product metadata (mugs, flasks, diaries) — they need the PDP name field, and a quick add
+ * would put an un-personalised line in the cart. See src/lib/personalisation.ts.
  */
 export function ProductCardWithQuickAdd({
 	product,

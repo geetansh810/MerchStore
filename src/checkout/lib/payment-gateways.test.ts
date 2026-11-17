@@ -30,6 +30,12 @@ const gatewayMessages = buildCheckoutGatewayMessages((key, values) => {
 		paymentTryAgain: "Payment failed. Please try again.",
 		paymentWebhookFailed: "Payment app webhook failed.",
 		paymentInitFailed: "Payment could not be initialized.",
+		upiMisconfiguredTitle: "UPI not configured title",
+		upiMisconfiguredBody: "UPI not configured",
+		upiCurrencyUnsupported: "UPI needs INR",
+		upiUnpaidOrdersDisabled: "Unpaid orders disabled",
+		upiTransactionIdInvalid: "Invalid UTR",
+		upiTransactionIdRequired: "UTR required",
 	};
 	return templates[key] ?? key;
 });
@@ -220,6 +226,24 @@ describe("resolvePaymentGatewayStatus", () => {
 				{ id: "saleor.io.gift-card-payment-gateway", name: "Gift Card Payment Gateway" },
 			]),
 		).toEqual({ kind: "none" });
+	});
+});
+
+describe("resolvePaymentGatewayStatus (UPI)", () => {
+	afterEach(() => {
+		vi.unstubAllEnvs();
+	});
+
+	it("returns upi_qr when UPI mode is configured", () => {
+		vi.stubEnv("NEXT_PUBLIC_PAYMENT_MODE", "upi_qr");
+		vi.stubEnv("NEXT_PUBLIC_UPI_VPA", "shop@okicici");
+		vi.stubEnv("NEXT_PUBLIC_UPI_PAYEE_NAME", "My Shop");
+		expect(resolvePaymentGatewayStatus([])).toEqual({ kind: "upi_qr" });
+	});
+
+	it("returns upi_qr_misconfigured when the VPA is missing", () => {
+		vi.stubEnv("NEXT_PUBLIC_PAYMENT_MODE", "upi_qr");
+		expect(resolvePaymentGatewayStatus([])).toEqual({ kind: "upi_qr_misconfigured", reason: "vpa_missing" });
 	});
 });
 

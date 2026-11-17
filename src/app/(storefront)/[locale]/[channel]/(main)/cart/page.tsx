@@ -110,6 +110,11 @@ async function CartContent({
 												{t("variant", { name: item.variant.name })}
 											</p>
 										)}
+										{item.personalisedName ? (
+											<p className="mt-1 text-sm text-muted-foreground">
+												{t("personalisedName", { name: item.personalisedName })}
+											</p>
+										) : null}
 									</div>
 									<p className="text-right font-semibold text-foreground">
 										{formatMoney(item.totalPrice.gross.amount, item.totalPrice.gross.currency, intlLocale)}

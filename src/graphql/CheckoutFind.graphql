@@ -5,6 +5,7 @@ query CheckoutFind($id: ID!, $languageCode: LanguageCodeEnum!) {
 		lines {
 			id
 			quantity
+			personalisedName: metafield(key: "personalised_name")
 			totalPrice {
 				gross {
 					amount

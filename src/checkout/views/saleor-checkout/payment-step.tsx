@@ -28,7 +28,7 @@ import { getFormattedMoney, formatMoneyWithFallback } from "@/checkout/lib/utils
 import { AuthorizedPaymentRecovery } from "@/checkout/components/payment/stripe/authorized-payment-recovery";
 import { isCheckoutFreeOrder } from "@/checkout/lib/payment/checkout-pay-amount";
 import { shouldShowPaymentMethodArea } from "@/checkout/lib/payment/should-show-payment-method-area";
-import { usesClientPaymentSubmit } from "@/checkout/lib/payment";
+import { isManualPaymentProvider, usesClientPaymentSubmit } from "@/checkout/lib/payment";
 import { consumePaymentCompletionError } from "@/checkout/lib/payment/checkout-payment-completion";
 import { useCheckoutPaymentReturnError } from "@/checkout/providers/checkout-payment-return-error";
 import { useSyncCheckoutRouterUrl } from "@/checkout/hooks/use-sync-checkout-router-url";
@@ -64,6 +64,8 @@ export const PaymentStep: FC<PaymentStepProps> = ({
 	);
 
 	const [isPaymentBusy, setIsPaymentBusy] = useState(false);
+	const [upiTransactionId, setUpiTransactionId] = useState("");
+	const paymentInput = useMemo(() => ({ upiTransactionId }), [upiTransactionId]);
 	const [sameAsBilling, setSameAsBilling] = useState(isShippingRequired && hasShippingAddress);
 	const [billingData, setBillingData] = useState<BillingAddressData>(() => ({
 		countryCode: defaultBillingCountry,
@@ -101,8 +103,10 @@ export const PaymentStep: FC<PaymentStepProps> = ({
 		shippingAddress,
 		userAddresses: user?.addresses,
 		authenticated,
+		paymentInput,
 	});
 
+	const isManualPayment = isManualPaymentProvider(provider);
 	const usesClientSubmit = usesClientPaymentSubmit(provider);
 	const isFreeOrder = isCheckoutFreeOrder(checkout);
 
@@ -157,21 +161,25 @@ export const PaymentStep: FC<PaymentStepProps> = ({
 	const totalStr = formatMoneyWithFallback(total);
 
 	const buttonText = isLoading
-		? isCompletingOrder
-			? tActions("creatingOrder")
-			: isFreeOrder
-				? tActions("placingOrder")
-				: tActions("processingPayment")
+		? isManualPayment && !isFreeOrder
+			? tActions("placingOrder")
+			: isCompletingOrder
+				? tActions("creatingOrder")
+				: isFreeOrder
+					? tActions("placingOrder")
+					: tActions("processingPayment")
 		: isFreeOrder
 			? tActions("completeOrder")
-			: tActions("payTotal", { total: totalStr });
+			: isManualPayment
+				? tActions("upiPlaceOrder")
+				: tActions("payTotal", { total: totalStr });
 
 	const hasInvalidDelivery = checkout.problems?.some(
 		(p) => p.__typename === "CheckoutProblemDeliveryMethodInvalid",
 	);
 
 	const billingFieldErrors = useMemo(() => {
-		const { payment, billing, ...fieldErrors } = errors;
+		const { payment, billing, upiTransactionId: _upiTransactionId, ...fieldErrors } = errors;
 		return fieldErrors;
 	}, [errors]);
 
@@ -260,6 +268,12 @@ export const PaymentStep: FC<PaymentStepProps> = ({
 					onBillingErrors={setBillingErrors}
 					onPriceChangeNotice={setPriceChangeNotice}
 					onPaymentActivityChange={handlePaymentActivityChange}
+					manualPayment={{
+						upiTransactionId,
+						onUpiTransactionIdChange: setUpiTransactionId,
+						upiTransactionIdError: errors.upiTransactionId,
+						disabled: isLoading,
+					}}
 				/>
 			) : null}
 
@@ -316,6 +330,7 @@ export const PaymentStep: FC<PaymentStepProps> = ({
 					total={totalStr}
 					loadingText={isCompletingOrder ? tActions("creatingOrder") : tActions("processingPayment")}
 					showPaymentTrust
+					actionLabel={isManualPayment && !isFreeOrder ? tActions("upiPlaceOrder") : undefined}
 				/>
 			) : null}
 		</>

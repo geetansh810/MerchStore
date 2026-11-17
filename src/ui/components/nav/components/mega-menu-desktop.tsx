@@ -52,7 +52,7 @@ function MegaMenuColumn({ item }: { item: NavMenuItem }) {
 }
 
 const megaMenuTriggerClassName =
-	"inline-flex items-baseline justify-start h-auto rounded-none border-b-2 border-transparent bg-transparent px-0 py-1 text-sm font-medium text-muted-foreground no-underline hover:bg-transparent hover:text-foreground focus:bg-transparent data-[state=open]:border-foreground data-[state=open]:bg-transparent data-[state=open]:text-foreground";
+	"inline-flex items-baseline justify-start whitespace-nowrap h-auto rounded-none border-b-2 border-transparent bg-transparent px-0 py-1 text-sm font-medium text-muted-foreground no-underline hover:bg-transparent hover:text-foreground focus:bg-transparent data-[state=open]:border-foreground data-[state=open]:bg-transparent data-[state=open]:text-foreground";
 
 const megaMenuDropdownTriggerClassName = cn(
 	megaMenuTriggerClassName,

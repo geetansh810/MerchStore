@@ -66,7 +66,7 @@ export function ProductCardBase({
 				<div className="space-y-1.5">
 					{product.brand && <p className="text-eyebrow uppercase text-muted-foreground">{product.brand}</p>}
 					<h3
-						className="truncate font-medium leading-snug text-foreground/80 no-underline transition-colors duration-200 md:group-hover:text-foreground"
+						className="line-clamp-2 font-medium leading-snug text-foreground/80 no-underline transition-colors duration-200 md:group-hover:text-foreground"
 						title={product.name}
 					>
 						{product.name}

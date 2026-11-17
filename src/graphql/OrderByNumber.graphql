@@ -6,6 +6,9 @@ fragment OrderFullDetails on Order {
 	statusDisplay
 	paymentStatus
 	isPaid
+	chargeStatus
+	paymentMethodKey: metafield(key: "payment_method")
+	upiTransactionId: metafield(key: "upi_transaction_id")
 	shippingAddress {
 		...AddressDetails
 	}
@@ -37,6 +40,7 @@ fragment OrderFullDetails on Order {
 	lines {
 		id
 		quantity
+		personalisedName: metafield(key: "personalised_name")
 		variant {
 			id
 			name

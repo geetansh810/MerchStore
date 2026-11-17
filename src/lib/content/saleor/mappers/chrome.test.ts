@@ -13,7 +13,15 @@ describe("mapChromePage", () => {
 			assignedAttributes: [{ attribute: { slug: "announcement-message" }, plainText: "Sale on now" }],
 		};
 
-		const merged = mergeStorefrontContent(defaultStorefrontContent, mapChromePage(page));
+		// Independent of the campaign defaults: the base has an empty id, as a fresh fork would.
+		const base = {
+			...defaultStorefrontContent,
+			chrome: {
+				...defaultStorefrontContent.chrome,
+				announcementBar: { ...defaultStorefrontContent.chrome.announcementBar, id: "" },
+			},
+		};
+		const merged = mergeStorefrontContent(base, mapChromePage(page));
 
 		expect(merged.chrome.announcementBar.message).toBe("Sale on now");
 		expect(merged.chrome.announcementBar.id).toBe("");

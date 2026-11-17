@@ -42,6 +42,10 @@ module.exports = {
 					foreground: "oklch(var(--success-foreground) / <alpha-value>)",
 				},
 				bestseller: "oklch(var(--bestseller) / <alpha-value>)",
+				highlight: {
+					DEFAULT: "oklch(var(--highlight) / <alpha-value>)",
+					foreground: "oklch(var(--highlight-foreground) / <alpha-value>)",
+				},
 				border: "oklch(var(--border) / <alpha-value>)",
 				input: "oklch(var(--input) / <alpha-value>)",
 				ring: "oklch(var(--ring) / <alpha-value>)",
@@ -76,6 +80,9 @@ module.exports = {
 				"section-md": "var(--section-space-md)",
 				"section-lg": "var(--section-space-lg)",
 			},
+			backgroundImage: {
+				"hero-sky": "var(--gradient-hero)",
+			},
 			boxShadow: {
 				card: "var(--shadow-card)",
 				elevated: "var(--shadow-elevated)",
@@ -105,6 +112,7 @@ module.exports = {
 				h3: ["var(--text-h3)", { lineHeight: "1.25", letterSpacing: "-0.005em", fontWeight: "600" }],
 				lead: ["var(--text-lead)", { lineHeight: "1.55" }],
 				eyebrow: ["var(--text-eyebrow)", { lineHeight: "1.4", letterSpacing: "0.1em", fontWeight: "600" }],
+				numeral: ["var(--text-numeral)", { lineHeight: "0.85", letterSpacing: "-0.04em", fontWeight: "700" }],
 			},
 			borderColor: {
 				DEFAULT: "oklch(var(--border) / <alpha-value>)",

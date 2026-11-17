@@ -3,9 +3,9 @@
  * Keep in sync with default `:root` tokens in `src/styles/brand.css`.
  */
 export const ogBrandColors = {
-	background: "#FAF9F7",
-	foreground: "#1A1A1A",
-	mutedForeground: "#737373",
+	background: "#F7FAFD",
+	foreground: "#0F1B2D",
+	mutedForeground: "#5B6B80",
 	card: "#FFFFFF",
-	border: "#E5E4DF",
+	border: "#DCE4EE",
 } as const;

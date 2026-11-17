@@ -16,8 +16,20 @@ export const PaymentGatewayAlerts: FC<PaymentGatewayAlertsProps> = ({ gateways }
 	const t = useTranslations("checkout.gateways");
 	const status = resolvePaymentGatewayStatus(gateways);
 
-	if (status.kind === "dummy" || status.kind === "stripe") {
+	if (status.kind === "dummy" || status.kind === "stripe" || status.kind === "upi_qr") {
 		return null;
+	}
+
+	if (status.kind === "upi_qr_misconfigured") {
+		return (
+			<div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4">
+				<AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+				<div>
+					<p className="font-medium text-amber-800">{t("upiMisconfiguredTitle")}</p>
+					<p className="mt-1 text-sm text-amber-700">{t("upiMisconfiguredBody")}</p>
+				</div>
+			</div>
+		);
 	}
 
 	if (status.kind === "none") {

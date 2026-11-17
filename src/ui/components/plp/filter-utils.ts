@@ -6,7 +6,7 @@
  * `src/lib/listing/providers/saleor/constraints.ts`.
  */
 
-import { STATIC_PRICE_RANGES, normalizeFacetValueSlug } from "@/config/facets";
+import { PRICE_FILTER_CURRENCY_SYMBOL, STATIC_PRICE_RANGES, normalizeFacetValueSlug } from "@/config/facets";
 import { compareSizes } from "@/lib/sizes";
 import type { ProductCardData } from "./product-card-data";
 import type { FilterOption, ActiveFilter, SortOption } from "./filter-bar";
@@ -173,7 +173,9 @@ export function buildActiveFilters(filters: {
 	});
 	if (filters.priceRange) {
 		const [min, max] = filters.priceRange.split("-");
-		const label = max ? `$${min} - $${max}` : `$${min}+`;
+		const label = max
+			? `${PRICE_FILTER_CURRENCY_SYMBOL}${min} - ${PRICE_FILTER_CURRENCY_SYMBOL}${max}`
+			: `${PRICE_FILTER_CURRENCY_SYMBOL}${min}+`;
 		active.push({ key: "price", label: "Price", value: label });
 	}
 	return active;

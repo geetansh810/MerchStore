@@ -6,6 +6,7 @@ fragment Money on Money {
 fragment OrderLineFragment on OrderLine {
 	id
 	quantity
+	personalisedName: metafield(key: "personalised_name")
 	variant {
 		name
 		translation(languageCode: $languageCode) {
@@ -83,6 +84,8 @@ fragment OrderFragment on Order {
 	}
 	chargeStatus
 	authorizeStatus
+	paymentMethodKey: metafield(key: "payment_method")
+	upiTransactionId: metafield(key: "upi_transaction_id")
 	shippingAddress {
 		...AddressFragment
 	}

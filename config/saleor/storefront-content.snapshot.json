@@ -372,8 +372,7 @@
 			"modelType": "Storefront — Policies",
 			"isPublished": true,
 			"attributes": {
-				"Free shipping threshold": 75,
-				"Returns window days": 30
+				"Returns window days": 7
 			}
 		},
 		{
@@ -382,8 +381,8 @@
 			"modelType": "Storefront — Chrome",
 			"isPublished": true,
 			"attributes": {
-				"Announcement ID": "",
-				"Announcement message": "Free shipping on orders over {freeShippingThreshold}",
+				"Announcement ID": "af70-launch",
+				"Announcement message": "Celebrating 70 years of the Air Force — personalised mugs, flasks & diaries",
 				"Announcement dismissible": true,
 				"Nav all products label": "All",
 				"Nav view all label": "View all {label}"
@@ -395,8 +394,8 @@
 			"modelType": "Storefront — Products",
 			"isPublished": true,
 			"attributes": {
-				"Listing title": "All Products",
-				"Listing description": "Browse our full catalog."
+				"Listing title": "All Gifts",
+				"Listing description": "Celebrate 70 years of the Air Force with commemorative apparel, barware, collectibles and personalised gifts."
 			}
 		},
 		{
@@ -405,28 +404,28 @@
 			"modelType": "Storefront — Homepage",
 			"isPublished": true,
 			"attributes": {
-				"Hero eyebrow": "",
-				"Hero heading": "Discover our collection",
-				"Hero subheading": "Discover our collection.",
-				"Hero CTA label": "Shop all",
-				"Featured heading": "Featured products",
-				"Featured collection": "featured-products",
-				"Featured limit": 8,
+				"Hero eyebrow": "Air Force · 70 Years",
+				"Hero heading": "Happy 70th Anniversary",
+				"Hero subheading": "Celebrating 70 years of the Air Force — commemorative gifts & merchandise.",
+				"Hero CTA label": "Shop the collection",
+				"Featured heading": "The 70th Anniversary Collection",
+				"Featured collection": "70th-anniversary",
+				"Featured limit": 12,
 				"Categories heading": "Shop by category",
-				"Categories eyebrow": "",
-				"Brand story heading": "Our story",
-				"Brand story paragraph 1": "Tell shoppers who you are and what you stand for.",
-				"Brand story paragraph 2": "Edit this copy in Dashboard → Models → Storefront — Homepage.",
-				"Values heading": "Why shop with us",
+				"Categories eyebrow": "Gifts & keepsakes",
+				"Brand story heading": "Seventy years of service",
+				"Brand story paragraph 1": "Seven decades of dedication, discipline and pride. This collection brings that milestone home, with commemorative pieces made to be worn, gifted and kept.",
+				"Brand story paragraph 2": "Commemorative pieces for the anniversary — and our mugs, coffee flasks and diaries can be personalised with a name of your choice.",
+				"Values heading": "Made for the occasion",
 				"Values columns desktop": 3,
-				"Values column 1 title": "Quality",
-				"Values column 1 text": "Share what makes your products worth choosing.",
-				"Values column 2 title": "Shipping",
-				"Values column 2 text": "Describe how and when orders arrive.",
-				"Values column 3 title": "Returns",
-				"Values column 3 text": "Easy returns within {returnsWindowDays} days.",
+				"Values column 1 title": "Commemorative designs",
+				"Values column 1 text": "Designed to mark the 70th anniversary.",
+				"Values column 2 title": "Personalised gifts",
+				"Values column 2 text": "Add a name to mugs, coffee flasks and diaries.",
+				"Values column 3 title": "Delivered across India",
+				"Values column 3 text": "Shipping charges and delivery options are shown at checkout.",
 				"Editorial heading": "From the shop",
-				"Editorial paragraph 1": "Highlight a collection, seasonal story, or campaign — then edit this block in Models.",
+				"Editorial paragraph 1": "Commemorative gifts and keepsakes for every member of the family.",
 				"Editorial image position": "right",
 				"Editorial CTA label": "Explore collections",
 				"Photo credits": "[]"
@@ -466,5 +465,5 @@
 			}
 		}
 	],
-	"contentHash": "bb0b30f65eabcc6a"
+	"contentHash": "d720db22514014c1"
 }

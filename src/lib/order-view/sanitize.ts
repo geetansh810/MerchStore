@@ -12,6 +12,9 @@ type OrderViewSanitizable = {
 	authorizeStatus?: unknown;
 	totalBalance?: unknown;
 	totalCaptured?: unknown;
+	upiTransactionId?: unknown;
+	paymentMethodKey?: unknown;
+	lines?: unknown;
 };
 
 /**
@@ -22,6 +25,14 @@ export function sanitizeOrderForClient<T extends OrderViewSanitizable>(order: T,
 	if (access === "public") {
 		return {
 			...order,
+			// Personalised names are customer-entered text — keep them off the shop-window view.
+			...(Array.isArray(order.lines)
+				? {
+						lines: order.lines.map((line: unknown) =>
+							line && typeof line === "object" ? { ...line, personalisedName: null } : line,
+						),
+					}
+				: {}),
 			userEmail: null,
 			shippingAddress: null,
 			billingAddress: null,
@@ -33,6 +44,8 @@ export function sanitizeOrderForClient<T extends OrderViewSanitizable>(order: T,
 			authorizeStatus: null,
 			totalBalance: null,
 			totalCaptured: null,
+			upiTransactionId: null,
+			paymentMethodKey: null,
 		};
 	}
 

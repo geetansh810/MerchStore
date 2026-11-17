@@ -24,7 +24,7 @@ export function CategoryHero({
 	const hasImage = !!backgroundImage;
 
 	return (
-		<section className="relative h-[340px] overflow-hidden border-b border-border">
+		<section className="relative flex min-h-[220px] flex-col overflow-hidden border-b border-border md:min-h-[340px]">
 			{/* Background */}
 			<div className="absolute inset-0">
 				{hasImage ? (
@@ -46,7 +46,7 @@ export function CategoryHero({
 			</div>
 
 			{/* Content */}
-			<div className="container-content relative flex h-full flex-col justify-end pb-10">
+			<div className="container-content relative flex flex-1 flex-col justify-end pb-8 pt-12 md:pb-10">
 				<Breadcrumbs
 					items={breadcrumbs}
 					ariaLabel={breadcrumbAriaLabel}

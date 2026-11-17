@@ -189,7 +189,9 @@ export const AddressFields: FC<AddressFieldsProps> = ({
 		const fieldLabel = (
 			<Label htmlFor={fieldId} className="text-sm font-medium">
 				{label}
-				{!isRequired && <span className="ml-1 font-normal text-muted-foreground">(optional)</span>}
+				{!isRequired && !/optional/i.test(label) && (
+					<span className="ml-1 font-normal text-muted-foreground">(optional)</span>
+				)}
 			</Label>
 		);
 

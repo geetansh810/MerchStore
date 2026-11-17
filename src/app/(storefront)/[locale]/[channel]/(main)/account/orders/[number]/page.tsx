@@ -12,6 +12,8 @@ import { formatDate, formatMoney } from "@/lib/utils";
 import { OrderTimeline } from "@/ui/components/account/order-timeline";
 import { OrderStatusBadge } from "@/ui/components/account/order-status-badge";
 import { AccountOrderDetailSkeleton } from "@/ui/components/account/account-skeleton";
+import { OrderPaymentBadge } from "@/ui/components/order-payment-badge";
+import { getOrderPaymentState, isUpiOrder } from "@/lib/order-payment-state";
 import { type AddressDetailsFragment } from "@/gql/graphql";
 
 type Props = {
@@ -55,6 +57,9 @@ async function OrderDetailContent({ params }: Props) {
 	}
 
 	const itemCount = order.lines.reduce((sum, l) => sum + l.quantity, 0);
+	const paymentState = getOrderPaymentState(order);
+	const upiTransactionId =
+		order.upiTransactionId && order.upiTransactionId !== "not_provided" ? order.upiTransactionId : null;
 	const placedDate = formatDate(new Date(order.created), undefined, intlLocale);
 
 	return (
@@ -107,6 +112,11 @@ async function OrderDetailContent({ params }: Props) {
 											{variantName !== variant.id && Boolean(variantName) && (
 												<p className="text-[13px] text-muted-foreground">{variantName}</p>
 											)}
+											{line.personalisedName ? (
+												<p className="text-[13px] text-muted-foreground">
+													{tCommon("personalisedName", { name: line.personalisedName })}
+												</p>
+											) : null}
 											<p className="text-[13px] text-muted-foreground">
 												{tCommon("qty", { count: line.quantity })}
 											</p>
@@ -170,14 +180,25 @@ async function OrderDetailContent({ params }: Props) {
 						<OrderAddress title={t("billingAddress")} address={order.billingAddress} />
 					)}
 
-					{order.isPaid && (
+					{paymentState !== "unknown" && (
 						<div className="rounded-xl border px-5 py-4">
 							<h3 className="mb-3 text-sm font-semibold">{t("paymentMethod")}</h3>
-							<div className="flex items-center gap-3">
-								<CreditCard className="h-4 w-4 text-muted-foreground" />
-								<span className="text-sm">
-									{order.paymentStatus === "FULLY_CHARGED" ? t("paid") : order.paymentStatus}
-								</span>
+							<div className="space-y-3">
+								{isUpiOrder(order) && (
+									<div className="flex items-center gap-3">
+										<CreditCard className="h-4 w-4 text-muted-foreground" />
+										<span className="text-sm">{t("paymentMethodUpi")}</span>
+									</div>
+								)}
+								<OrderPaymentBadge
+									state={paymentState}
+									label={paymentState === "paid" ? t("paid") : t("paymentPendingVerification")}
+								/>
+								{upiTransactionId && (
+									<p className="text-sm text-muted-foreground">
+										{t("upiTransactionId", { id: upiTransactionId })}
+									</p>
+								)}
 							</div>
 						</div>
 					)}

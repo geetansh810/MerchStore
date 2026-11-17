@@ -11,6 +11,11 @@ import {
 } from "@/gql/graphql";
 import { emitCommerceEvent } from "@/lib/analytics/emit.server";
 import * as Checkout from "@/lib/checkout";
+import {
+	PERSONALISED_NAME_HARD_MAX_LENGTH,
+	buildCheckoutLineInput,
+	validatePersonalisedName,
+} from "@/lib/personalisation";
 
 // Private state (session/cart cookies) lives in dynamic holes that read cookies at
 // request time — it is never in the shared cache, so there is nothing global to
@@ -104,7 +109,19 @@ export async function addVariantToCart(input: {
 	variantId: string;
 	value?: number;
 	currency?: string;
+	/** Name to print on personalised products. Re-validated here: exported actions are callable from any client. */
+	personalisedName?: string | null;
 }) {
+	let personalisedName: string | null = null;
+	if (input.personalisedName != null) {
+		const result = validatePersonalisedName(input.personalisedName, PERSONALISED_NAME_HARD_MAX_LENGTH);
+		if (!result.ok) {
+			console.error("Add to cart: invalid personalised name", result.reason);
+			return { ok: false as const, reason: result.reason };
+		}
+		personalisedName = result.value;
+	}
+
 	const checkout = await Checkout.findOrCreate({
 		checkoutId: await Checkout.getIdFromCookies(input.channel),
 		channel: input.channel,
@@ -121,7 +138,12 @@ export async function addVariantToCart(input: {
 	const addResult = await mutate(CheckoutAddLineDocument, {
 		variables: {
 			id: checkout.id,
-			productVariantId: decodeURIComponent(input.variantId),
+			lines: [
+				buildCheckoutLineInput({
+					variantId: decodeURIComponent(input.variantId),
+					personalisedName,
+				}),
+			],
 		},
 	});
 

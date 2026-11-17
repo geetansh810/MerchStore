@@ -26,23 +26,23 @@
 	 * a Tailwind utility (`text-foreground`) over inline `var()`.
 	 *
 	 * Cool, neutral palette: crisp near-white page with soft grey panels. */
-	--background: 0.99 0 0; /* Page background - crisp near-white */
+	--background: 0.9837 0.0051 247.9; /* Page background - cool near-white (#F7FAFD) */
 	--card: 1 0 0; /* Cards, dropdowns, modals */
 	--popover: 1 0 0;
-	--secondary: 0.965 0 0; /* Soft grey panels (hero/editorial image tiles) */
-	--muted: 0.95 0 0;
-	--accent: 0.95 0 0;
+	--secondary: 0.9685 0.0079 253.9; /* Soft blue-grey panels (#F1F5FA) */
+	--muted: 0.9685 0.0079 253.9;
+	--accent: 0.9597 0.0144 244.7; /* pale sky (#EAF3FB) */
 
 	/* --- Foregrounds (text on light surfaces) --- */
-	--foreground: 0.12 0 0;
-	--card-foreground: 0.12 0 0;
-	--popover-foreground: 0.12 0 0;
-	--secondary-foreground: 0.12 0 0;
-	--muted-foreground: 0.45 0 0;
-	--accent-foreground: 0.12 0 0;
+	--foreground: 0.221 0.0394 258.3; /* navy ink (#0F1B2D) */
+	--card-foreground: 0.221 0.0394 258.3;
+	--popover-foreground: 0.221 0.0394 258.3;
+	--secondary-foreground: 0.221 0.0394 258.3;
+	--muted-foreground: 0.5225 0.0385 255.3; /* #5B6B80 */
+	--accent-foreground: 0.221 0.0394 258.3;
 
 	/* --- Primary (CTAs, key actions) --- */
-	--primary: 0.12 0 0;
+	--primary: 0.2432 0.0664 259.4; /* deep navy (#0B1F3F) */
 	--primary-foreground: 0.98 0 0;
 
 	/* --- Semantic --- */
@@ -53,15 +53,23 @@
 	--bestseller: 0.56 0.084 68; /* Bronze outline (~#8B6B3D) — bestseller badge */
 
 	/* --- Interactive --- */
-	--border: 0.915 0 0;
-	--input: 0.915 0 0;
-	--ring: 0.12 0 0;
+	--border: 0.9157 0.0161 253.9;
+	--input: 0.9157 0.0161 253.9;
+	--ring: 0.6892 0.1215 242.9; /* sky */
 
 	/* --- Inverse surfaces (dark bands: bg-foreground text-background) --- */
-	--inverse: 0.82 0 0;
-	--inverse-subtle: 0.65 0 0;
-	--inverse-muted: 0.55 0 0;
-	--border-inverse: 0.28 0 0;
+	--inverse: 0.8711 0.0263 253.6;
+	--inverse-subtle: 0.7541 0.0388 254.6;
+	--inverse-muted: 0.6468 0.0422 254.4;
+	--border-inverse: 0.3413 0.0654 260.5;
+
+	/* --- Campaign accents (hero motif / eyebrow only) --- */
+	--highlight: 0.6892 0.1215 242.9; /* sky blue accent */
+	--highlight-foreground: 0.2432 0.0664 259.4;
+	--primary-deep: 0.1972 0.0487 258.8; /* #07152B */
+	--gradient-hero:
+		radial-gradient(120% 90% at 85% 10%, oklch(var(--highlight) / 0.28) 0%, transparent 55%),
+		linear-gradient(160deg, oklch(var(--primary)) 0%, oklch(var(--primary-deep)) 100%);
 
 	/* --- Typography: fluid type scale (rem + clamp) ---
 	 * Sized in rem so it respects the user's browser font size (a11y).
@@ -77,6 +85,7 @@
 	--text-h3: clamp(1.125rem, 1.05rem + 0.4vw, 1.5rem); /* 18 → 24px */
 	--text-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem); /* 17 → 20px */
 	--text-eyebrow: 0.75rem; /* 12px fixed — overlines, brand labels */
+	--text-numeral: clamp(7rem, 3rem + 20vw, 18rem); /* hero numeral (e.g. "70") */
 
 	/* --- Layout / shape ---
 	 * Corner styles are split out so the whole UI can be re-shaped from one place.
@@ -130,9 +139,9 @@
 	--section-space-lg: clamp(5rem, 3rem + 7vw, 9rem); /* 80 → 144px */
 
 	/* --- Elevation (use shadow-card / shadow-elevated / shadow-overlay) --- */
-	--shadow-card: 0 1px 2px 0 oklch(0.12 0 0 / 0.05);
-	--shadow-elevated: 0 4px 16px -2px oklch(0.12 0 0 / 0.1);
-	--shadow-overlay: 0 12px 40px -4px oklch(0.12 0 0 / 0.18);
+	--shadow-card: 0 1px 2px 0 oklch(0.22 0.04 258 / 0.05);
+	--shadow-elevated: 0 4px 16px -2px oklch(0.22 0.04 258 / 0.1);
+	--shadow-overlay: 0 12px 40px -4px oklch(0.22 0.04 258 / 0.18);
 
 	/* --- Motion ---
 	 * Standard durations / easings (use duration-fast|base|slow, ease-standard|emphasized).
