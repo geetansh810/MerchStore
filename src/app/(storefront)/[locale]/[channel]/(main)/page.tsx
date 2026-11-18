@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { brandConfig } from "@/config/brand";
-import { anniversaryCampaign } from "@/config/campaign";
+import { heroSlides } from "@/config/hero-slides";
 import { resolveLocaleFromSlug } from "@/config/locale";
 import { getFeaturedProducts } from "@/lib/catalog/get-featured-products";
 import { resolveChannelCurrency } from "@/lib/channels/resolve-channel-currency";
@@ -9,7 +9,7 @@ import { formatContentLabel } from "@/lib/content/format-label";
 import { getStorefrontContent } from "@/lib/content/server";
 import { buildSaleorSrcSet } from "@/lib/images";
 import { pickTranslatedSlug } from "@/lib/saleor-translations";
-import { AnniversaryHero } from "@/ui/sections/anniversary-hero/anniversary-hero";
+import { BannerHero } from "@/ui/sections/banner-hero/banner-hero";
 import { CategoryTileGrid, type CategoryTile } from "@/ui/sections/category-tile-grid/category-tile-grid";
 import { FeaturedCollectionSection } from "@/ui/sections/featured-collection-section/featured-collection-section";
 import { MulticolumnSection } from "@/ui/sections/multicolumn-section/multicolumn-section";
@@ -73,15 +73,8 @@ function buildCategoryTiles(products: readonly FeaturedProduct[], max = 3): Cate
 /** Fold-height placeholder so client-nav App Shells keep layout while URL data resolves. */
 function HomePageFallback() {
 	return (
-		<div aria-hidden="true">
-			<div className="min-h-[calc(100svh-var(--chrome-offset))] bg-primary">
-				<div className="container-content flex h-full min-h-[calc(100svh-var(--chrome-offset))] flex-col justify-end pb-16 pt-24">
-					<div className="h-3 w-24 animate-pulse rounded bg-primary-foreground/10" />
-					<div className="mt-4 h-10 w-2/3 max-w-xl animate-pulse rounded bg-primary-foreground/10" />
-					<div className="mt-3 h-4 w-1/2 max-w-md animate-pulse rounded bg-primary-foreground/10" />
-					<div className="mt-8 h-11 w-36 animate-pulse rounded bg-primary-foreground/10" />
-				</div>
-			</div>
+		<div aria-hidden="true" className="bg-primary">
+			<div className="min-h-[560px] animate-pulse bg-primary-foreground/5 lg:min-h-[min(78svh,680px)]" />
 		</div>
 	);
 }
@@ -120,18 +113,7 @@ async function HomePageContent({ params }: { params: HomeParams }) {
 
 	return (
 		<>
-			<AnniversaryHero
-				eyebrow={hero.eyebrow}
-				heading={hero.heading}
-				subheading={hero.subheading}
-				numeral={String(anniversaryCampaign.years)}
-				numeralCaption="Years"
-				primaryCta={{
-					label: hero.primaryCtaLabel,
-					href: `/collections/${featuredCollection.collectionSlug}`,
-				}}
-				secondaryCta={{ label: "Browse all", href: "/products" }}
-			/>
+			<BannerHero heading={hero.heading} slides={heroSlides} />
 
 			{categoryTiles.length >= 2 ? (
 				<CategoryTileGrid

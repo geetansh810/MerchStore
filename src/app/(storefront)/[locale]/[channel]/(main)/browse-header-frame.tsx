@@ -21,7 +21,7 @@ function HeaderActionsSkeleton() {
 
 function HeaderLogoFallback() {
 	return (
-		<div className="flex shrink-0 items-center" aria-hidden="true">
+		<div className="flex min-w-0 items-center" aria-hidden="true">
 			<SharedLogo className="h-7 w-auto" />
 		</div>
 	);
@@ -34,7 +34,7 @@ export function BrowseHeaderFrame({ params }: { params: BrowseRouteParams }) {
 			className="relative sticky top-0 z-40 border-b border-border bg-background"
 		>
 			<div className="container-nav">
-				<div className="flex h-16 items-center justify-between gap-4">
+				<div className="flex h-16 items-center justify-between gap-2 sm:gap-4">
 					<Suspense fallback={<HeaderLogoFallback />}>
 						<Logo />
 					</Suspense>
@@ -62,7 +62,7 @@ export function BrowseHeaderFrame({ params }: { params: BrowseRouteParams }) {
 						<HeaderSearchSlot params={params} />
 					</Suspense>
 
-					<div className="flex items-center gap-1">
+					<div className="flex shrink-0 items-center gap-1">
 						<Suspense fallback={<HeaderActionsSkeleton />}>
 							<HeaderActionsSlot params={params} />
 						</Suspense>

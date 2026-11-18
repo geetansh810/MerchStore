@@ -43,13 +43,16 @@ export const Logo = ({ className, ariaLabel = brandConfig.logoAriaLabel, inverte
 		aria-label={ariaLabel || undefined}
 		aria-hidden={ariaLabel ? undefined : true}
 		className={cn(
-			"inline-flex items-center gap-2 whitespace-nowrap",
+			"inline-flex min-w-0 max-w-full items-center gap-2 whitespace-nowrap",
 			inverted ? "text-background" : "text-foreground",
 			className,
 		)}
 	>
-		<LogoMark className="h-full w-auto" />
-		<span className="font-display text-lg font-semibold leading-none tracking-tight" aria-hidden="true">
+		<LogoMark className="h-full w-auto shrink-0" />
+		<span
+			className="font-display min-w-0 truncate text-base font-semibold leading-tight tracking-tight min-[380px]:text-lg"
+			aria-hidden="true"
+		>
 			{brandConfig.siteName}
 		</span>
 	</span>

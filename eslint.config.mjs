@@ -59,6 +59,7 @@ const NEXT_IMAGE_ALLOWED_FILES = [
 	"src/ui/sections/hero-banner/hero-banner.tsx",
 	"src/ui/sections/logo-strip/logo-strip.tsx",
 	"src/ui/sections/media-hero/media-hero.tsx",
+	"src/ui/sections/banner-hero/banner-hero.tsx", // local static banner art
 	"src/ui/sections/multicolumn-section/multicolumn-section.tsx",
 	"src/checkout/views/saleor-checkout/order-summary.tsx",
 	// Brackets are minimatch character classes — escape literal route segments.
